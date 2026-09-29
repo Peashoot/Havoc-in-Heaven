@@ -10,6 +10,26 @@ import { rand } from '../engine/ease.ts';
 export const INK = '#2b1810';
 const r2 = (n: number) => +n.toFixed(1);
 
+/** Mix two #rrggbb colours. */
+export function mix(a: string, b: string, t: number): string {
+  const k = Math.max(0, Math.min(1, t));
+  const pa = [1, 3, 5].map((i) => parseInt(a.slice(i, i + 2), 16));
+  const pb = [1, 3, 5].map((i) => parseInt(b.slice(i, i + 2), 16));
+  return '#' + pa.map((v, i) => Math.round(v + (pb[i] - v) * k).toString(16).padStart(2, '0')).join('');
+}
+
+/** Colour keyframes: [[t, '#hex'], ...] sampled at t. */
+export function colorAt(keys: [number, string][], t: number): string {
+  if (t <= keys[0][0]) return keys[0][1];
+  for (let i = 1; i < keys.length; i++) {
+    if (t <= keys[i][0]) {
+      const k = (t - keys[i - 1][0]) / (keys[i][0] - keys[i - 1][0]);
+      return mix(keys[i - 1][1], keys[i][1], k * k * (3 - 2 * k));
+    }
+  }
+  return keys[keys.length - 1][1];
+}
+
 /** Global gradients/filters shared by all scenes (ids start with k-). */
 export const KIT_DEFS = `
   <filter id="k-blur2" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="2"/></filter>
