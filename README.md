@@ -51,8 +51,11 @@ npm run export:mp4
 
 ## 项目结构
 
-- `src/main.ts`：舞台尺寸、播放及 `window.renderFrame` 入口。
-- `src/timeline.ts`：镜头时间、状态与调度。
-- `src/`：SVG 场景和 Canvas 特效。
-- `scripts/export-frames.mjs`：浏览器逐帧 PNG 导出。
-- `docs/storyboard.md`：分镜与视觉叙事说明。
+- `src/timeline.ts`：22 幕的帧区间、转场类型与长度，以及每帧由哪一两幕合成。
+- `src/engine/`：缓动与关键帧、多层景深摄像机（前景/中景/远景视差）、双场景槽转场渲染器。
+- `src/rig/`：可动关节的悟空角色（五套服装、姿势库、IK、披风飘带的惯性跟随）。
+- `src/scenes/`：每幕一个文件 `s01.ts`–`s22.ts`，公共美术在 `kit.ts`，Canvas 特效在 `fxkit.ts`。
+- `scripts/snap.mjs`：渲染指定帧并拼成总览图，用于逐镜检查，例如 `node scripts/snap.mjs 0-3149:75 --sheet all --cols 7`。
+- `scripts/export-frames.mjs`、`scripts/render-mp4.mjs`：逐帧 PNG / MP4 导出。
+- `scripts/subset-font.py`：修改片中汉字后重新生成标题字体子集。
+- `docs/scene-brief.md`：分镜与每幕内容说明。

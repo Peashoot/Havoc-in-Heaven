@@ -4,59 +4,38 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-"Havoc in Heaven" (大闹天宫) is a deterministic frame-by-frame 2D animated film rendered using HTML, CSS, SVG, and HTML5 Canvas.
-- Resolution: Fixed 1920 × 1080 canvas (16:9), auto-scaled to viewport via CSS transform.
-- Frame rate & Duration: 30 fps, 105 seconds, exactly 3150 frames (numbered 0 to 3149) across 22 scenes defined in `docs/storyboard.md`.
-- Tech Stack: Vite, TypeScript (no frontend framework), native Node.js test runner, Playwright & FFmpeg for rendering.
+"Havoc in Heaven" (大闹天宫) is a deterministic frame-by-frame 2D animated film rendered with SVG + Canvas in the browser.
+- Fixed 1920 × 1080 stage, 30 fps, 3150 frames (0–3149), 22 scenes. Storyboard/spec: `docs/scene-brief.md`.
+- Vite + TypeScript (no framework), Node's native test runner, Playwright + FFmpeg for export.
+- Production build (`dist/`) is served directly by nginx at movie.hlearn.online — `npm run build` updates the live site.
 
 ## Commands
 
-### Development
-- `npm run dev` — Start Vite dev server on `0.0.0.0:5173`.
-  - Preview specific frame in browser: `http://localhost:5173/?frame=<number>` (0–3149).
-  - Jump to a frame in browser console: `window.renderFrame(<number>)`.
+- `npm run dev` — dev server; `/?frame=N` or `window.renderFrame(N)` shows one frame.
+- `npm test` — `node --experimental-strip-types --test 'src/**/*.test.ts'`. Single test: add `--test-name-pattern="<pattern>"`.
+- `npm run build` — `tsc --noEmit && vite build`.
+- `node scripts/snap.mjs 200 480 1600 --out frames/x --sheet x --cols 3` — render specific frames (dev server + headless Chromium) and tile them into `frames/x/x.jpg`. Ranges: `0-3149:105`. `--page rig.html` renders the rig/pose sheet instead. **This is the verification loop: render, look at the sheet, fix.**
+- `npm run export:frames` / `node scripts/export-frames.mjs --start A --end B` — PNG export from the production build; `npm run render:mp4` streams straight to FFmpeg.
+- `python3 scripts/subset-font.py` — re-subset the title font (`public/fonts/film-serif.woff2`) after adding any CJK text to `src/`.
 
-### Build & Test
-- `npm test` — Run timeline and scene boundary tests using Node.js native test runner (`node --experimental-strip-types --test src/timeline.test.ts`).
-- Run a single test by pattern: `node --experimental-strip-types --test src/timeline.test.ts --test-name-pattern="<pattern>"`
-- `npm run build` — Typecheck (`tsc --noEmit`) and bundle production assets with Vite (`vite build`).
+## Architecture
 
-### Frame & Video Export
-- `npx playwright install chromium` — Install Playwright Chromium (required if system Chrome is absent).
-- `npm run export:frames` — Build and launch headless browser to export all 3150 PNG frames to `frames/frame-%05d.png`.
-- Export a frame subset: `node scripts/export-frames.mjs --start <start> --end <end>` (e.g., `node scripts/export-frames.mjs --start 900 --end 929`).
-- `npm run export:mp4` — Stitch existing PNG sequence in `frames/` into `havoc-in-heaven.mp4` using FFmpeg.
-- `npm run render:mp4` — Build and stream frames directly from headless browser to FFmpeg stdin to produce `havoc-in-heaven.mp4` without saving intermediate PNG files.
-  - Custom range/output: `node scripts/render-mp4.mjs --start <start> --end <end> --output <filename.mp4>`
+### Time
+- `src/timeline.ts`: `SCENE_BOUNDS`, `TRANSITIONS` (type + length, centred on each boundary) and `compose(frame)` → the one or two scenes live at that frame plus the transition mix. `sceneTime(scene, frame)` gives `{lf, p, dur}` — `lf` is the scene-local frame and is also evaluated **outside** `[0, dur)` while a transition overlaps, so scenes must look right at lf < 0 and lf > dur.
+- Everything is a pure function of the frame. Never use `Math.random`/`Date`; use `rand(n)` / `noise(x, seed)` from `src/engine/ease.ts`.
+- `ease.ts` also has `track(keys, t)` keyframe tracks with named eases (`inBack` = anticipation, `outBack`/`outSpring` = overshoot, `outExpo` = snap) and `shake()`.
 
-## Architecture & Rendering Pipeline
+### Rendering (`src/engine/`)
+- `scene.ts`: `SceneDef { id, bg, markup(), camera(t), heroes?(t), update?(d, t), fx?(ctx, t, view), shake?(t) }`. `plane(z, body)` makes a multiplane layer: z=0 is fixed sky, z=1 is the subject plane, z>1 is foreground; `planeMatrix(cam, z)` gives parallax + per-depth zoom (`zoom^z`).
+- `render.ts`: two scene slots (`#slot0`/`#slot1`, scene % 2) so transitions can overlap two live scenes; per-slot fx canvases composited to `#fx`; transition overlays (cloud wall, ink, flash, black, push, whip blur) on `#tx`.
+- Scene rules: every class/id in a scene is prefixed `sN-`; wrap kit elements that already have a `transform` in a `<g>` before animating them.
 
-### Deterministic Timeline (`src/timeline.ts`)
-- The single source of truth for the entire film is `filmState(frameNumber): FilmState`.
-- Every frame from 0 to 3149 maps deterministically to one of 22 scenes in `SCENE_BOUNDS`.
-- `filmState()` calculates progress (0–1), camera position (`cameraX`, `cameraY`, `cameraScale`, `shake`), actor positions, rotations, color palettes, fog, rain, fire, staff glow, eye glow, shockwaves, debris, and title opacity.
-- Animation avoids real-time timer drift; rendering any frame index always yields identical output.
+### Characters and kit
+- `src/rig/hero.ts`: jointed Wukong puppet (FK, 2-bone IK for the rear arm, foot planting, follow-through on cape/scarf/plumes driven by the pose 3 frames earlier). `solve(pose)` returns hand/staff positions for props. Costumes are CSS-switched via `data-c`: pilgrim, king, bima, sage, furnace. `staffA`: 0 forward, 90 down, −90 up.
+- `src/rig/poses.ts`: pose library `P`, `walk()`, `poseTrack()`. `rig.html` renders pose/costume sheets.
+- `src/scenes/kit.ts`: shared SVG drawing (sky, clouds, karst, halls, 南天门 `heavenGate`, soldiers, immortals, monkeys, peaches, props, fairies) and gradient/filter defs. `fxkit.ts`: canvas FX (staff smear sampled from the pose function, speed lines, shock rings, sparks, motes).
+- `src/scenes/sNN.ts`: one file per scene; some share sets (s15 imports s14's courtyard, s18/s19 import s16's furnace).
 
-### Stage Layering (`index.html` & `src/style.css`)
-Inside `#stage` (1920 × 1080), rendering is stacked across distinct DOM layers by z-index:
-1. `#backdrop` (`<canvas>`, z=0): Sky gradient and cloud volumes (`src/clouds.ts`, Scene 1).
-2. `#world` (`<div>` with SVG, z=1): Scenery, architectural elements, doors, and landscapes (`src/sceneArtwork.ts`, `src/palace.ts`).
-3. `#atmosphere` (`<canvas>`, z=2): Dynamic atmospheric effects like drifting fog, sea waves, rain, furnace fire, and chromatic particle clouds (`src/filmCanvas.ts`).
-4. `#darkness` (`<div>`, z=3): Scene dimming and blackout transitions controlled by `state.darkness`.
-5. `#actors` (`<div>` with SVG, z=4): Wukong, Ruyi Jingu Bang (staff), celestial army, and court officials (`src/actors.ts`).
-6. `#effects` (`<canvas>`, z=5): Action FX such as shockwaves, staff trails, lightning flashes, flying debris, and sparks (`src/effects.ts`).
-7. `#final-title` (`<div>` with SVG, z=6): Calligraphic title "大闹天宫" fading in at scene 22 (`state.titleOpacity`).
-8. `#flash` (`<div>`, z=7): White/gold impact flash overlay (`state.flash`).
-9. Overlays (z=8–9): `#vignette` radial gradient and top/bottom `#letterbox` bars.
-
-### Orchestration (`src/main.ts`)
-- Exposes `window.renderFrame(frameNumber)`.
-- Updates `#world` inner SVG when the scene transitions (`sceneArtwork(scene)`).
-- Manipulates dynamic SVG transforms and opacities in `updateArtwork(state)`.
-- Synchronizes actor SVG states via `updateActors(state, actors)`.
-- Redraws Canvas contexts (`backdrop`, `atmosphere`, `effects`) for the current frame.
-- Sets `data-frame` and `data-scene` attributes on `#stage` for Playwright screenshot verification.
-
-### Narrative Visual Rules
-- **Color symbolism**: Represents Wukong's freedom. Vibrant jades/golds at Mount Huaguo (`free`) -> desaturated grays/cold blues under heavenly bureaucracy and torture (`faded`, `punishment`) -> dark black in the furnace (`ember`) -> explosive 5-color release upon shattering the furnace (`rainbow`).
-- **Staff dynamics**: Hidden during study, emerges at Huaguo, disappears during horse-tending, dims under punishment, and reignites with high glow (`staffGlow`) during the revolt.
+### Visual rules
+- Colour follows Wukong's freedom: saturated Huaguo → grey-gold bureaucracy → blue-grey punishment → furnace fire → rainbow release.
+- Costume arc: pilgrim (s2–3) → king (s4, s10) → bima (s5–9) → sage armour (s11–13, s19–22) → furnace (s14–18).
