@@ -1,6 +1,6 @@
 import test, { describe } from 'node:test';
 import assert from 'node:assert/strict';
-import { drawEffects, goldenCrescentTrails, expandingShockwave } from './effects.ts';
+import { drawEffects, goldenCrescentTrails, expandingShockwave, drawAnimeSpeedlines } from './effects.ts';
 import { drawFilmAtmosphere, samadhiFire, fiveColorFluidRibbons, FIVE_COLORS } from './filmCanvas.ts';
 import { filmState, TOTAL_FRAMES, SCENE_BOUNDS } from './timeline.ts';
 
@@ -211,6 +211,15 @@ describe('Task 6: Canvas dynamic FX and staff motion trails', () => {
         assert.doesNotThrow(() => drawFilmAtmosphere(ctx, state), `Scene ${s} (frame ${frame}) threw error`);
         assert.ok(ctx.calls.length > 0, `Scene ${s} should have generated draw commands`);
       }
+    });
+
+    test('drawAnimeSpeedlines renders high energy speed lines when speedlines > 0', () => {
+      const ctx = createMockContext2D();
+      const state = filmState(1612); // frame 1612 has high speedlines
+      state.speedlines = 1.0;
+      drawAnimeSpeedlines(ctx, state);
+      const strokeCalls = ctx.calls.filter((c) => c.method === 'stroke');
+      assert.ok(strokeCalls.length >= 20, 'speedlines should execute multiple stroke calls');
     });
   });
 

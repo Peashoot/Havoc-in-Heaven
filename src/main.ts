@@ -51,6 +51,15 @@ function setTransform(selector: string, transform: string) {
 
 export function updateArtwork(state: FilmState) {
   const p = state.progress;
+
+  // 3-Layer Parallax: Foreground and Background differential offsets
+  const fgX = state.parallaxForeground || 0;
+  const bgX = state.parallaxBackground || 0;
+  setTransform('.scene-foreground-frame', `translate(${fgX * 1.4} 0)`);
+  setTransform('.scene-foreground-battle', `translate(${fgX * 1.5} 0)`);
+  setTransform('.scene-foreground-pillars', `translate(${fgX * 1.3} 0)`);
+  setTransform('.far-mountains', `translate(${bgX * 0.4} 0)`);
+
   if (state.scene === 2) {
     setTransform('.long-scroll-landscape', `translate(${-p * 7680} 0)`);
     setTransform('.raft', `translate(${610 + state.raftX * 250} 802)`);
@@ -122,8 +131,9 @@ export function renderFrame(frameNumber: number, isManual = true): FilmState {
 
   const shakeX = Math.sin(state.frame * 2.41) * 22 * state.shake;
   const shakeY = Math.cos(state.frame * 3.17) * 17 * state.shake;
+  const camTransform = `translate3d(${state.cameraX + shakeX}px, ${state.cameraY + shakeY}px, 0) scale(${state.cameraScale})`;
   if (world) {
-    world.style.transform = `translate3d(${state.cameraX + shakeX}px, ${state.cameraY + shakeY}px, 0) scale(${state.cameraScale})`;
+    world.style.transform = camTransform;
     world.style.opacity = String(state.scene === 1 ? state.palaceOpacity : 1);
   }
 
@@ -134,6 +144,7 @@ export function renderFrame(frameNumber: number, isManual = true): FilmState {
 
   // 4. 2D actor styling & 5-stage costume updates
   if (actors) {
+    actors.style.transform = camTransform;
     updateActors(state, actors);
   }
 

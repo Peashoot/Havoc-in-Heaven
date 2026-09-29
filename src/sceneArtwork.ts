@@ -92,20 +92,24 @@ function frame(scene: number, content: string): string {
    TRADITIONAL CHINESE ART MODULES (GONGBI, BLUE-GREEN SHANSHUI, HAN-TANG)
    ========================================================================= */
 
-/** Blue-Green Gongbi Mountain Peaks with Gold Outlines (青绿金碧山水) */
+/** Blue-Green Gongbi Mountain Peaks with Organic Curved Contours & Shaded Ridges (青绿金碧名山) */
 function blueGreenMountains(p: Palette, y = 680): string {
   return `<g class="far-mountains">
-    <!-- Distant Azurite Mountain Silhouettes -->
-    <path d="M0 ${y - 40} 85 ${y - 95} 175 ${y - 70} 320 ${y - 230} 425 ${y - 110} 536 ${y - 170} 680 ${y - 65} 815 ${y - 195} 935 ${y - 88} 1075 ${y - 240} 1210 ${y - 80} 1370 ${y - 150} 1530 ${y - 60} 1675 ${y - 225} 1800 ${y - 115} 1920 ${y - 165}v480H0Z" fill="${p.ridge}"/>
-    <path d="M0 ${y - 40} 85 ${y - 95} 175 ${y - 70} 320 ${y - 230} 425 ${y - 110} 536 ${y - 170} 680 ${y - 65} 815 ${y - 195} 935 ${y - 88} 1075 ${y - 240} 1210 ${y - 80} 1370 ${y - 150} 1530 ${y - 60} 1675 ${y - 225} 1800 ${y - 115} 1920 ${y - 165}" fill="none" stroke="${p.gold}" stroke-width="2.5" opacity=".7"/>
-    <!-- Mid Mineral Malachite Mountain Layers (斧劈皴) -->
-    <path d="M0 ${y + 90} 170 ${y} 255 ${y + 36} 448 ${y - 105} 575 ${y + 32} 745 ${y - 60} 922 ${y + 72} 1140 ${y - 71} 1283 ${y + 42} 1464 ${y - 84} 1660 ${y + 20} 1785 ${y - 41} 1920 ${y + 65}v400H0Z" fill="${p.near}"/>
-    <path d="M0 ${y + 90} 170 ${y} 255 ${y + 36} 448 ${y - 105} 575 ${y + 32} 745 ${y - 60} 922 ${y + 72} 1140 ${y - 71} 1283 ${y + 42} 1464 ${y - 84} 1660 ${y + 20} 1785 ${y - 41} 1920 ${y + 65}" fill="none" stroke="${p.gold}" stroke-width="3" opacity=".82"/>
-    <!-- Shading clefts on mid peaks -->
-    <path d="M448 ${y - 105}l-40 120 70 80m267-155-30 85 55 90m405-181-45 95 60 80m324-178-35 80 50 95" fill="none" stroke="${p.ink}" stroke-width="4" opacity=".55"/>
+    <!-- Distant Layered Azurite Mountain Peaks with Organic Curves -->
+    <path d="M0 ${y - 30} C160 ${y - 120} 240 ${y - 60} 380 ${y - 190} C480 ${y - 280} 580 ${y - 140} 720 ${y - 220} C860 ${y - 300} 980 ${y - 120} 1120 ${y - 250} C1260 ${y - 320} 1390 ${y - 160} 1540 ${y - 240} C1680 ${y - 300} 1800 ${y - 120} 1920 ${y - 180} v520 H0 Z" fill="${p.ridge}"/>
+    <path d="M0 ${y - 30} C160 ${y - 120} 240 ${y - 60} 380 ${y - 190} C480 ${y - 280} 580 ${y - 140} 720 ${y - 220} C860 ${y - 300} 980 ${y - 120} 1120 ${y - 250} C1260 ${y - 320} 1390 ${y - 160} 1540 ${y - 240} C1680 ${y - 300} 1800 ${y - 120} 1920 ${y - 180}" fill="none" stroke="${p.gold}" stroke-width="2.5" opacity=".7"/>
+
+    <!-- Mid Mineral Malachite Mountain Layers (斧劈皴与阴阳向背) -->
+    <path d="M0 ${y + 80} C180 ${y - 20} 280 ${y + 40} 460 ${y - 90} C590 ${y - 180} 690 ${y - 30} 860 ${y - 120} C1000 ${y - 200} 1120 ${y - 40} 1290 ${y - 140} C1420 ${y - 210} 1560 ${y - 50} 1720 ${y - 110} C1820 ${y - 150} 1880 ${y - 40} 1920 ${y - 70} v420 H0 Z" fill="${p.near}"/>
+    <path d="M0 ${y + 80} C180 ${y - 20} 280 ${y + 40} 460 ${y - 90} C590 ${y - 180} 690 ${y - 30} 860 ${y - 120} C1000 ${y - 200} 1120 ${y - 40} 1290 ${y - 140} C1420 ${y - 210} 1560 ${y - 50} 1720 ${y - 110} C1820 ${y - 150} 1880 ${y - 40} 1920 ${y - 70}" fill="none" stroke="${p.gold}" stroke-width="3" opacity=".82"/>
+
+    <!-- Shaded Ravine Grooves & Axe-Cut Clefts (山壑阴影与皴法) -->
+    <path d="M460 ${y - 90} Q410 ${y + 40} 480 ${y + 110} M860 ${y - 120} Q820 ${y} 890 ${y + 90} M1290 ${y - 140} Q1240 ${y - 20} 1320 ${y + 80} M1720 ${y - 110} Q1680 ${y} 1750 ${y + 90}" fill="none" stroke="${p.ink}" stroke-width="6" opacity=".55"/>
+    <path d="M460 ${y - 90} Q500 ${y} 440 ${y + 70} M860 ${y - 120} Q910 ${y - 30} 840 ${y + 60} M1290 ${y - 140} Q1340 ${y - 40} 1270 ${y + 70}" fill="none" stroke="${p.glow}" stroke-width="2" opacity=".4"/>
+
     <!-- Near Deep Mineral Ink Peaks and Foothills -->
-    <path d="M0 ${y + 175}q260-80 498 20t475-42q228-80 465 15t482-28v360H0Z" fill="${p.ink}"/>
-    <path d="M0 ${y + 175}q260-80 498 20t475-42q228-80 465 15t482-28" fill="none" stroke="${p.gold}" stroke-width="2.5" opacity=".6"/>
+    <path d="M0 ${y + 160} Q260 ${y + 90} 500 ${y + 180} T1000 ${y + 150} T1500 ${y + 170} T1920 ${y + 140} v360 H0 Z" fill="${p.ink}"/>
+    <path d="M0 ${y + 160} Q260 ${y + 90} 500 ${y + 180} T1000 ${y + 150} T1500 ${y + 170} T1920 ${y + 140}" fill="none" stroke="${p.gold}" stroke-width="2.5" opacity=".6"/>
   </g>`;
 }
 
@@ -335,9 +339,23 @@ function oceanRaft(): string {
   </g>`;
 }
 
-/** 5-Panel Horizontal Long Scroll Landscape (漂洋过海长卷) */
+/** 5-Panel Horizontal Long Scroll Landscape (漂洋过海无缝水墨长卷) */
 function longScrollLandscape(p: Palette): string {
   const panels = [
+    // Global continuous sky across all panels to ensure zero vertical seams
+    `<defs>
+      <linearGradient id="scroll-sky-grad" x1="0" y1="0" x2="9600" y2="0" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#142e38"/>
+        <stop offset="18%" stop-color="#283d50"/>
+        <stop offset="35%" stop-color="#4a3e35"/>
+        <stop offset="48%" stop-color="#162232"/>
+        <stop offset="65%" stop-color="#0c1828"/>
+        <stop offset="82%" stop-color="#2a1d2e"/>
+        <stop offset="100%" stop-color="#55382c"/>
+      </linearGradient>
+    </defs>
+    <rect x="-400" y="0" width="10400" height="1080" fill="url(#scroll-sky-grad)"/>`,
+
     // Panel 1: Huaguo Mountain Shore (0-1920)
     `<g class="scroll-flower-mountain" transform="translate(0 0)">
       ${blueGreenMountains(p, 648)}
@@ -347,26 +365,26 @@ function longScrollLandscape(p: Palette): string {
     </g>`,
     // Panel 2: Vast Open Ocean with Auspicious Sun (1920-3840)
     `<g class="scroll-ocean" transform="translate(1920 0)">
-      ${celestialOrb(1520, 420, 68)}
+      ${celestialOrb(850, 360, 68)}
       ${auspiciousClouds()}
-      <path d="M0 690h1920v390H0Z" fill="url(#scene-water)"/>
-      <path d="M0 720q160-35 320 0t320 0q160-35 320 0t320 0q160-35 320 0t320 0v360H0Z" fill="#184150" opacity=".6"/>
+      <path d="M-400 680 Q400 630 1000 680 T2320 670 v420 H-400 Z" fill="url(#scene-water)"/>
+      <path d="M-400 710 Q300 660 800 710 T2120 700 v390 H-400 Z" fill="#184150" opacity=".6"/>
     </g>`,
     // Panel 3: Tempest and Stormy Ocean (3840-5760)
     `<g class="scroll-storm" transform="translate(3840 0)">
-      <path d="M0 320q480-260 960-50t960-20v830H0Z" fill="#192838"/>
-      <!-- Lightning Strike -->
-      <path d="M840 120l-45 180h55l-70 240" fill="none" stroke="#ffeb85" stroke-width="6" filter="url(#scene-blur)"/>
-      <path d="M840 120l-45 180h55l-70 240" fill="none" stroke="#fffce6" stroke-width="2.5"/>
-      <path d="M0 680q240-80 480 15t480-20q240-80 480 15t480-20v405H0Z" fill="#132a35"/>
+      <!-- Rolling storm clouds only in the upper atmosphere, smoothly blending -->
+      <path d="M-1200 -50 C-600 0 -200 240 400 210 C1000 180 1600 300 2320 260 v400 C1600 620 1000 500 400 550 C-200 600 -700 480 -1200 -50 Z" fill="#0f1924" opacity=".85"/>
+      <!-- Lightning Strike with soft aura -->
+      <path d="M840 80 L790 240 L850 250 L770 480" fill="none" stroke="#ffeb85" stroke-width="8" filter="url(#scene-blur)"/>
+      <path d="M840 80 L790 240 L850 250 L770 480" fill="none" stroke="#fffce6" stroke-width="3"/>
+      <!-- Roaring storm waves -->
+      <path d="M-400 660 Q300 580 800 670 T1920 650 T2320 670 v430 H-400 Z" fill="#132a35"/>
     </g>`,
     // Panel 4: Peaceful Starlit Night Sea (5760-7680)
     `<g class="scroll-night" transform="translate(5760 0)">
-      <path d="M0 0h1920v1080H0Z" fill="#0c1828"/>
       ${celestialOrb(1560, 220, 65, true)}
-      <!-- Stars in ink night -->
-      ${Array.from({ length: 28 }, (_, i) => `<circle cx="${(i * 389) % 1920}" cy="${(i * 197) % 550}" r="${1 + (i % 3)}" fill="#dbeeff" opacity=".65"/>`).join('')}
-      <path d="M0 700h1920v380H0Z" fill="#0f2233"/>
+      ${Array.from({ length: 32 }, (_, i) => `<circle cx="${(i * 389) % 1920}" cy="${(i * 197) % 550}" r="${1 + (i % 3)}" fill="#dbeeff" opacity=".7"/>`).join('')}
+      <path d="M-400 680 Q400 640 1000 680 T2320 670 v400 H-400 Z" fill="#0f2233"/>
     </g>`,
     // Panel 5: Dawn Approaching Sanxing Cave Mountain (7680-9600)
     `<g class="scroll-dawn" transform="translate(7680 0)">
@@ -383,13 +401,14 @@ function peachBanquetTable(disorder = false): string {
   const bigPeach = (x: number, y: number, rot = 0) => `<g class="nine-thousand-peach" transform="translate(${x} ${y}) rotate(${rot})">
     <!-- Golden Lotus Saucer Base -->
     <path d="M-36 12q36 18 72 0l-12 16h-48Z" fill="url(#scene-gold)" stroke="#aa7e35" stroke-width="2"/>
-    <!-- Peach Fruit Flesh with Blushing Tip -->
-    <path d="M0-36q-26-22-36 6-22 52 36 68 58-16 36-68-10-28-36-6Z" fill="#e86b7b" stroke="#ffd1a8" stroke-width="4"/>
-    <path d="M0-32q-16-16-22 4-15 36 22 48 38-12 22-48-6-20-22-4Z" fill="#fa98a6"/>
+    <!-- Peach Fruit Flesh with Blushing Tip & Glossy Highlight -->
+    <path d="M0-36 C-24-48 -42-20 -38 12 C-35 38 0 52 0 52 C0 52 35 38 38 12 C42-20 24-48 0-36 Z" fill="url(#scene-cinnabar)" stroke="#ffd1a8" stroke-width="3"/>
+    <path d="M-5-28 C-20-38 -32-15 -28 10 C-25 30 0 42 0 42 C0 42 25 30 28 10 C32-15 20-38 5-28 Z" fill="#ff7675" opacity=".65"/>
+    <path d="M-12-22 C-26-20 -30-5 -26 12" stroke="#ffffff" stroke-width="2.5" fill="none" opacity=".8" stroke-linecap="round"/>
     <!-- Jade Leaf (碧玉叶) -->
-    <path d="M0-28q10-24 35-28-6 24-35 28Z" fill="#2d8c6b" stroke="#7be3be" stroke-width="2"/>
+    <path d="M0-32 C12-52 38-48 32-26 C20-28 10-26 0-32 Z" fill="#2ecc71" stroke="#27ae60" stroke-width="2"/>
     <!-- Golden Stem -->
-    <path d="M0-28v-12" stroke="#d5aa55" stroke-width="4" stroke-linecap="round"/>
+    <path d="M0-32 v-10" stroke="#d5aa55" stroke-width="3.5" stroke-linecap="round"/>
   </g>`;
 
   // Nine-turn Golden Elixir Gourd (九转金丹葫芦)
@@ -422,8 +441,8 @@ function peachBanquetTable(disorder = false): string {
         <path d="M0-23v28m-36 0h72" stroke="${palettes.feast.gold}" stroke-width="8" stroke-linecap="round"/>
       </g>`;
     }).join('')}
-    <!-- Giant 9000-year Peaches (九千年大蟠桃) -->
-    ${Array.from({ length: 9 }, (_, i) => bigPeach(255 + i * 180, disorder ? 540 - (i % 3) * 45 : 630, disorder ? i * 28 : 0)).join('')}
+    <!-- Giant 9000-year Peaches (九千年大蟠桃，中央主位已被大圣取走) -->
+    ${Array.from({ length: 9 }, (_, i) => (!disorder && i === 4 ? '' : bigPeach(255 + i * 180, disorder ? 540 - (i % 3) * 45 : 630, disorder ? i * 28 : 0))).join('')}
     <!-- Scattered Nine-turn Elixir Gourds (散落九转金丹葫芦) -->
     ${[360, 720, 1140, 1530].map((gx, idx) => elixirGourd(gx, disorder ? 510 - idx * 25 : 625, disorder ? idx * 45 : 12)).join('')}
   </g>`;
@@ -589,15 +608,29 @@ function artwork(scene: number): string {
       return `${celestialOrb(1440, 200, 105)}
         ${auspiciousClouds()}
         ${blueGreenMountains(p, 600)}
-        <!-- Water Curtain Cave Waterfall (水帘洞飞瀑) -->
+        <!-- Water Curtain Cave Cascading Waterfall (水帘洞层叠飞瀑) -->
         <g class="waterfall-complex">
-          <path class="waterfall" d="M1175 580q-85 210-25 495h95q-45-315 35-495Z" fill="#d8f6e4" opacity=".78"/>
-          <path d="M1170 820q25 15 50-10t45 15" stroke="#ffffff" stroke-width="6" fill="none" opacity=".8"/>
+          <path d="M1040 520 C1090 560 1070 720 1050 850 C1040 920 1060 1010 1030 1080 h100 C1100 990 1080 850 1110 720 C1130 600 1090 540 1040 520 Z" fill="#1b453a" stroke="${p.gold}" stroke-width="2"/>
+          <path d="M1340 510 C1280 550 1300 710 1320 840 C1330 910 1310 1000 1340 1080 h-100 C1250 990 1270 850 1240 720 C1220 600 1260 540 1340 510 Z" fill="#1b453a" stroke="${p.gold}" stroke-width="2"/>
+          <path class="waterfall" d="M1080 530 C1100 640 1070 780 1085 920 C1095 1000 1075 1060 1080 1080 h190 C1265 1050 1250 990 1260 910 C1275 770 1240 630 1270 530 Z" fill="#e8fbf6" opacity=".92"/>
+          <path d="M1120 540 C1135 660 1110 820 1125 1080 M1175 535 C1185 680 1170 850 1180 1080 M1230 540 C1220 670 1240 840 1230 1080" stroke="#ffffff" stroke-width="4.5" fill="none" opacity=".85"/>
+          <ellipse cx="1175" cy="1060" rx="160" ry="36" fill="#ffffff" opacity=".7" filter="url(#scene-blur)"/>
+          <ellipse cx="1175" cy="1060" rx="140" ry="24" fill="#d0f4ea" opacity=".8"/>
+          <path d="M1040 1050 Q1175 1085 1310 1050 M1070 1065 Q1175 1095 1280 1065" stroke="#ffffff" stroke-width="3" fill="none" opacity=".8"/>
         </g>
         ${gnarledPine(200, 1020, 1.3)}
         ${gnarledPine(1810, 1070, 1.45, true)}
         ${lingzhiHerbs(360, 1030, 1.4)}
-        <path d="M0 920q260-112 475 0t435-14q252-94 465 24t560-25v175H0Z" fill="#16433e"/>`;
+        <path d="M0 920 C260 860 480 940 780 900 C1080 860 1360 940 1620 900 C1780 880 1860 920 1920 905 v175 H0 Z" fill="#16433e"/>
+        <!-- Foreground Framing: Ancient Pine Boughs Overhanging from Top Corners -->
+        <g class="scene-foreground-frame" opacity=".95">
+          <path d="M-40-30 Q140 90 320 60 Q420 50 500-20" fill="none" stroke="#162220" stroke-width="36" stroke-linecap="round"/>
+          <path d="M1960-40 Q1780 100 1600 70 Q1480 50 1380-20" fill="none" stroke="#162220" stroke-width="32" stroke-linecap="round"/>
+          <ellipse cx="300" cy="80" rx="75" ry="32" fill="#144a39" stroke="#529977" stroke-width="2.5"/>
+          <ellipse cx="460" cy="30" rx="65" ry="28" fill="#1b5c49" stroke="#68aa88" stroke-width="2.5"/>
+          <ellipse cx="1640" cy="90" rx="80" ry="34" fill="#144a39" stroke="#529977" stroke-width="2.5"/>
+          <ellipse cx="1460" cy="40" rx="68" ry="30" fill="#1b5c49" stroke="#68aa88" stroke-width="2.5"/>
+        </g>`;
 
     case 5:
       // Scene 5: 天庭诏安 (Heaven's Decree at Nantianmen)
@@ -666,12 +699,60 @@ function artwork(scene: number): string {
 
     case 8:
       // Scene 8: 笑容消失 (Smile Vanishes / Peach Banquet Hall)
-      return `<rect width="1920" height="1080" fill="#17202b"/>
+      return `<rect class="banquet-hall-bg" width="1920" height="1080" fill="#17202b"/>
         <ellipse cx="990" cy="470" rx="730" ry="490" fill="url(#scene-halo)" opacity=".36"/>
         <!-- Grand Celestial Colonnade -->
         ${[150, 480, 1440, 1770].map(x => dragonColumn(x, 100, 780, 65)).join('')}
-        <g class="feast-inserts">
-          ${peachBanquetTable(false)}
+        ${peachBanquetTable(false)}
+        <!-- Detailed Banquet Close-up Insert with Bitten 9000-Year Celestial Peach (右侧特写画框) -->
+        <g class="feast-inserts" transform="translate(1360 450) scale(0.85)">
+          <!-- Circular Anime Focus Spotlight Frame -->
+          <circle cx="0" cy="0" r="320" fill="url(#scene-halo)" opacity=".45"/>
+          <circle cx="0" cy="0" r="280" fill="#17202b" stroke="url(#scene-gold)" stroke-width="7"/>
+
+          <!-- 1. Grand 9000-Year Celestial Peach -->
+          <g transform="translate(0 -20) scale(2.0)">
+            <!-- Golden Leaf -->
+            <path d="M0-40 C20-75 65-80 60-45 C35-48 15-42 0-40 Z" fill="#2ecc71" stroke="#27ae60" stroke-width="3"/>
+            <path d="M0-40 v-18" stroke="#d5aa55" stroke-width="5" stroke-linecap="round"/>
+            <!-- Ripe Carmine Peach Body -->
+            <path d="M0-48 C-42-80 -85-30 -75 25 C-65 75 0 100 0 100 C0 100 65 75 75 25 C85-30 42-80 0-48 Z" fill="url(#scene-cinnabar)" stroke="#ffd1a8" stroke-width="4"/>
+            <!-- Specular Highlight Curve -->
+            <path d="M-30 -35 C-55 -25 -65 5 -55 35" stroke="#ffffff" stroke-width="5" fill="none" opacity=".85" stroke-linecap="round"/>
+            <path d="M-22 -40 C-40 -35 -48 -15 -42 10" stroke="#ffffff" stroke-width="2" fill="none" opacity=".6" stroke-linecap="round"/>
+            <!-- Crescent Bite Mark (仙桃咬痕: 鲜美白玉果肉与果核) -->
+            <path d="M38-5 C22-2 15 15 25 32 C35 48 58 45 68 35 C52 32 45 15 55 0 Z" fill="#fff9e6" stroke="#c0392b" stroke-width="3.5"/>
+            <ellipse cx="45" cy="18" rx="8" ry="12" fill="#8c532b" stroke="#5c3800" stroke-width="2"/>
+            <path d="M42 10 Q47 18 43 26" stroke="#4a2c14" stroke-width="2" fill="none"/>
+          </g>
+
+          <!-- 2. Furry Monkey Arm and Fingers Clasping over the Peach -->
+          <g id="peach-gripping-hand" transform="translate(0 30)">
+            <!-- Golden furry arm extending from bottom-left -->
+            <path d="M-130 220 C-110 140 -80 70 -50 35 C-30 50 -45 120 -60 220 Z" fill="#b7791f" stroke="#683b0d" stroke-width="3.5"/>
+            <path d="M-75 160 L-55 75 L-35 40" stroke="#f1c40f" stroke-width="9" fill="none" stroke-linecap="round"/>
+            <!-- Palm and Fingers wrapping in front of the peach base -->
+            <ellipse cx="-20" cy="50" rx="35" ry="25" fill="#d68910" stroke="#935817" stroke-width="3"/>
+            <!-- 4 Fingers wrapped across the peach front -->
+            <path d="M-45 35 C-25 15 15 20 40 45" stroke="#f5cd79" stroke-width="14" stroke-linecap="round" fill="none"/>
+            <path d="M-38 12 C-15 -8 28 -5 55 18" stroke="#f5cd79" stroke-width="14" stroke-linecap="round" fill="none"/>
+            <path d="M-28 -12 C-5 -30 38 -25 65 -2" stroke="#f5cd79" stroke-width="13" stroke-linecap="round" fill="none"/>
+            <path d="M-50 60 C-30 40 0 45 25 70" stroke="#f5cd79" stroke-width="13" stroke-linecap="round" fill="none"/>
+            <!-- Black Claws at finger tips -->
+            <circle cx="42" cy="45" r="5" fill="#2c1a0e"/>
+            <circle cx="57" cy="18" r="5" fill="#2c1a0e"/>
+            <circle cx="67" cy="-2" r="5" fill="#2c1a0e"/>
+            <circle cx="27" cy="70" r="5" fill="#2c1a0e"/>
+          </g>
+
+          <!-- Golden Wine Ewer and Spilled Pearls on table -->
+          <g transform="translate(-160 120)">
+            <path d="M-18 20 L-10 -25 L10 -25 L18 20 Z" fill="url(#scene-gold)" stroke="#aa7e35" stroke-width="2.5"/>
+            <path d="M10 -20 Q28 -10 18 10" stroke="url(#scene-gold)" stroke-width="5" fill="none"/>
+            <circle cx="-14" cy="-28" r="4" fill="#ffffff" opacity=".8"/>
+          </g>
+          <circle cx="150" cy="140" r="8" fill="url(#scene-gold)"/>
+          <circle cx="175" cy="150" r="6" fill="url(#scene-gold)"/>
         </g>
         ${mist(850, .4)}`;
 
@@ -741,17 +822,35 @@ function artwork(scene: number): string {
 
     case 12:
       // Scene 12: 第一棒 (The First Golden Cudgel Strike)
-      return `${blueGreenMountains(p, 760)}
-        <path d="M0 0h1920v570H0Z" fill="#09101a" opacity=".8"/>
+      return `${blueGreenMountains(p, 720)}
+        <!-- Dramatic Boiling Storm Clouds with Lightning Veins -->
+        <g class="storm-clouds">
+          <path d="M0 0 C400 0 600 220 960 180 C1300 140 1600 280 1920 220 v380 C1600 680 1200 580 960 620 C650 660 300 560 0 640 Z" fill="#152230" opacity=".85"/>
+          <!-- Branching Golden Lightning Strikes -->
+          <path d="M420 0 L360 180 L430 195 L340 380 L390 390 L310 540" fill="none" stroke="#ffeaa7" stroke-width="6" filter="url(#scene-blur)"/>
+          <path d="M420 0 L360 180 L430 195 L340 380 L390 390 L310 540" fill="none" stroke="#ffffff" stroke-width="2.5"/>
+          <path d="M1520 0 L1580 160 L1530 180 L1610 360" fill="none" stroke="#ffeaa7" stroke-width="5" filter="url(#scene-blur)"/>
+          <path d="M1520 0 L1580 160 L1530 180 L1610 360" fill="none" stroke="#ffffff" stroke-width="2"/>
+        </g>
         ${cloudArmy()}
         <!-- Descending Torrent of Spears and Halberds -->
-        <g class="descending-spears" stroke="#b8cbd8" stroke-width="4.5" opacity=".75">
-          ${Array.from({ length: 42 }, (_, i) => `<path d="M${i * 48} ${160 + (i % 4) * 68}l-85 410"/>`).join('')}
+        <g class="descending-spears" stroke="#b8cbd8" stroke-width="4.5" opacity=".8">
+          ${Array.from({ length: 42 }, (_, i) => `<path d="M${i * 48} ${140 + (i % 4) * 65}l-85 410"/>`).join('')}
         </g>
         <!-- Cratered Impact Ground with Shockwave Ripples -->
         <g class="impact-ground-group">
-          <path class="impact-ground" d="M0 865q475-115 960 36t960-36v215H0Z" fill="#152430"/>
-          <ellipse cx="960" cy="940" rx="380" ry="45" fill="none" stroke="url(#scene-gold)" stroke-width="12" opacity=".7"/>
+          <path class="impact-ground" d="M0 840 C450 780 750 860 960 830 C1200 800 1500 870 1920 835 v245 H0 Z" fill="#152430"/>
+          <ellipse cx="960" cy="920" rx="420" ry="50" fill="none" stroke="url(#scene-gold)" stroke-width="14" opacity=".8"/>
+        </g>
+        <!-- Foreground Battle Framing: Flying broken celestial spears & cloud swirls -->
+        <g class="scene-foreground-battle" opacity=".95">
+          <!-- Spear slicing across lower-left foreground -->
+          <path d="M-50 1040 L260 760" stroke="#f5f6fa" stroke-width="14" stroke-linecap="round"/>
+          <path d="M260 760 L310 720 L290 780 Z" fill="#f5f6fa" stroke="#ffd700" stroke-width="3"/>
+          <path d="M245 770 Q280 820 230 860" stroke="#e74c3c" stroke-width="10" fill="none"/>
+          <!-- Celestial Halberd slicing across lower-right foreground -->
+          <path d="M1980 1060 L1640 760" stroke="#f5f6fa" stroke-width="14" stroke-linecap="round"/>
+          <path d="M1640 760 L1590 720 L1610 780 Z" fill="#f5f6fa" stroke="#ffd700" stroke-width="3"/>
         </g>`;
 
     case 13:
@@ -866,7 +965,12 @@ function artwork(scene: number): string {
           ${dragonColumn(1500, -50, 1150, 85, -9)}
           ${dragonColumn(1800, -50, 1150, 85, 14)}
         </g>
-        <path d="M0 940q440-130 960 30t960-30v140H0Z" fill="#1c2b45" opacity=".82"/>`;
+        <path d="M0 940q440-130 960 30t960-30v140H0Z" fill="#1c2b45" opacity=".82"/>
+        <!-- Foreground Toppling Dragon Pillars (坍塌盘龙柱穿透镜头) -->
+        <g class="scene-foreground-pillars" opacity=".85">
+          <path d="M-60 1120 L280 400 L380 430 L40 1150 Z" fill="#2c2225" stroke="url(#scene-gold)" stroke-width="12"/>
+          <path d="M1980 1120 L1640 400 L1540 430 L1880 1150 Z" fill="#2c2225" stroke="url(#scene-gold)" stroke-width="12"/>
+        </g>`;
 
     case 21:
       // Scene 21: 凌霄宝殿 (The Lingxiao Grand Hall)

@@ -66,7 +66,7 @@ async function waitForServer(url, child) {
 }
 
 async function launchBrowser() {
-  const args = ['--disable-gpu', '--disable-gpu-compositing'];
+  const args = ['--enable-webgl', '--use-gl=swiftshader', '--no-sandbox'];
   try {
     return await chromium.launch({ channel: 'chrome', headless: true, args });
   } catch {

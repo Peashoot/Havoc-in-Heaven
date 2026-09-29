@@ -52,7 +52,7 @@ function createMockRoot(): { root: any; elements: Record<string, MockElement> } 
 
   const elements: Record<string, MockElement> = {};
   const ids = [
-    'hero', 'cape-shape', 'hero-staff', 'hero-whip', 'eyes', 'eye-rays',
+    'hero', 'cape-shape', 'hero-staff', 'hero-arms', 'hero-whip', 'eyes', 'eye-rays',
     'kneeling-hero', 'soldier-ranks', 'phoenix-crown', 'feather-left', 'feather-right',
     'costume-pilgrim', 'costume-monkey', 'costume-bima', 'costume-greatsage', 'costume-furnace',
     'head-pilgrim', 'head-monkey', 'head-bima', 'head-crown', 'head-furnace', 'staff-arc'
@@ -67,7 +67,7 @@ function createMockRoot(): { root: any; elements: Record<string, MockElement> } 
   // Nest under hero
   const hero = elements['hero'];
   hero.children.push(
-    elements['cape-shape'], elements['hero-staff'], elements['hero-whip'],
+    elements['cape-shape'], elements['hero-staff'], elements['hero-arms'], elements['hero-whip'],
     elements['eyes'], elements['eye-rays'], elements['phoenix-crown'],
     elements['feather-left'], elements['feather-right'],
     elements['costume-pilgrim'], elements['costume-monkey'], elements['costume-bima'],
@@ -167,3 +167,15 @@ test('updateActors sways pheasant feathers dynamically with featherAngle', () =>
   assert.ok(rightTransform?.includes('rotate('), 'right feather has rotate transform');
   assert.ok(leftTransform?.includes('14.5'), 'left feather receives featherAngle');
 });
+
+test('updateActors animates articulated arms and adjusts hero transform based on martial stance', () => {
+  const { root, elements } = createMockRoot();
+  const stateCrouch = filmState(1590); // Scene 12 anticipation crouch
+  updateActors(stateCrouch, root as any);
+  assert.equal(elements['hero-arms'].style.opacity, '1');
+  const armsTransform = elements['hero-arms'].getAttribute('transform');
+  assert.ok(armsTransform?.includes('rotate(12)'), 'arms rotate in crouch stance');
+  const heroTransform = elements['hero'].getAttribute('transform');
+  assert.ok(heroTransform?.includes('scale('), 'hero has scale transform with squash');
+});
+

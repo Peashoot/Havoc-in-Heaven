@@ -95,3 +95,22 @@ test('3d camera coordinates, target, fov, roll, and featherAngle are finite and 
   }
 });
 
+test('motion graphics kinematics and heroStance are well defined across all frames', () => {
+  const stances = new Set(['stand', 'crouch', 'lunge', 'jump', 'strike', 'meditate']);
+  for (let frame = 0; frame < TOTAL_FRAMES; frame++) {
+    const s = filmState(frame);
+    assert.ok(stances.has(s.heroStance), `frame ${frame}: invalid stance ${s.heroStance}`);
+    assert.ok(s.heroSquashX > 0 && Number.isFinite(s.heroSquashX), `frame ${frame} heroSquashX`);
+    assert.ok(s.heroSquashY > 0 && Number.isFinite(s.heroSquashY), `frame ${frame} heroSquashY`);
+    assert.ok(Number.isFinite(s.speedlines) && s.speedlines >= 0 && s.speedlines <= 1.5, `frame ${frame} speedlines`);
+    assert.ok(Number.isFinite(s.parallaxForeground), `frame ${frame} parallaxForeground`);
+    assert.ok(Number.isFinite(s.parallaxBackground), `frame ${frame} parallaxBackground`);
+  }
+  // Anticipation crouch before strike in Scene 12
+  assert.equal(filmState(1590).heroStance, 'crouch');
+  // Explosive strike at impact in Scene 12
+  assert.equal(filmState(1612).heroStance, 'strike');
+  assert.ok(filmState(1612).speedlines > 0.8);
+});
+
+

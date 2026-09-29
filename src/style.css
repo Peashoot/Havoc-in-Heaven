@@ -4,7 +4,7 @@ html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; }
 #viewport { position: fixed; inset: 0; overflow: hidden; background: #080a0e; }
 #stage { position: absolute; width: 1920px; height: 1080px; overflow: hidden; transform-origin: top left; background: #0d1118; }
 #stage canvas, #world, #actors, #darkness, #final-title, #flash, #vignette { position: absolute; inset: 0; width: 1920px; height: 1080px; }
-#world { transform-origin: 960px 620px; }
+#world, #actors { transform-origin: 960px 620px; }
 #world svg, #actors svg, #final-title svg { width: 100%; height: 100%; display: block; }
 #backdrop { z-index: 0; }
 #webgl-stage { z-index: 1; pointer-events: none; }

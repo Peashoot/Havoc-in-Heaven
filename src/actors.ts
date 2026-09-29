@@ -6,65 +6,69 @@ import type { FilmState } from './timeline';
  */
 function soldierSvg(index: number): string {
   const isAlt = index % 2 === 1;
-  const spearAngle = isAlt ? -18 : -12;
+  const spearAngle = isAlt ? -24 : -16;
   return `<g class="soldier" data-index="${index}">
     <!-- Celestial Soldier Shadow -->
-    <ellipse cx="0" cy="0" rx="36" ry="10" fill="#000000" opacity=".35"/>
+    <ellipse cx="0" cy="0" rx="38" ry="12" fill="#000000" opacity=".4"/>
 
-    <!-- Greaves and Boots -->
-    <path d="M-22-2 M-22-38 L-30 0 L-6 0 L-10-38 Z" fill="#1e272e" stroke="#0a0f14" stroke-width="2.5"/>
-    <path d="M12-38 L6 0 L30 0 L22-38 Z" fill="#1e272e" stroke="#0a0f14" stroke-width="2.5"/>
-    <path d="M-28-2 L-8-2 M8-2 L28-2" stroke="#dfe6e9" stroke-width="3"/>
+    <!-- Armored Legs in Combat Stance -->
+    <!-- Left Leg (Forward) -->
+    <path d="M-26 -85 C-32 -55 -28 -25 -24 0 L-6 0 C-10 -30 -14 -60 -12 -85 Z" fill="#1e272e" stroke="#0a0f14" stroke-width="2.5"/>
+    <path d="M-28 0 L-4 0" stroke="#f1c40f" stroke-width="3" stroke-linecap="round"/>
+    <!-- Right Leg (Braced Back) -->
+    <path d="M12 -85 C14 -55 20 -25 28 0 L44 0 C34 -30 26 -60 22 -85 Z" fill="#1e272e" stroke="#0a0f14" stroke-width="2.5"/>
+    <path d="M26 0 L46 0" stroke="#f1c40f" stroke-width="3" stroke-linecap="round"/>
 
-    <!-- Trousers and Thigh Armor (裙甲) -->
-    <path d="M-30-78 L-32-36 L-6-36 L-8-78 Z M8-78 L6-36 L32-36 L30-78 Z" fill="#2d3436" stroke="#636e72" stroke-width="3"/>
-    <path d="M-28-76 Q0-68 28-76 L25-42 Q0-38 -25-42 Z" fill="#3867d6" stroke="#2c3e50" stroke-width="2.5"/>
+    <!-- Tassets & Silk Skirt (战裙与腰甲) -->
+    <path d="M-34 -95 Q0 -85 34 -95 L30 -45 Q0 -35 -30 -45 Z" fill="#2d3436" stroke="#4b6584" stroke-width="2.5"/>
+    <path d="M-26 -92 Q0 -82 26 -92 L22 -52 Q0 -44 -22 -52 Z" fill="#0984e3" stroke="#74b9ff" stroke-width="2"/>
 
-    <!-- Breastplate (银白玄铁明光甲) -->
-    <path d="M-32-132 Q-36-95 -28-78 Q0-70 28-78 Q36-95 32-132 Q0-140 -32-132 Z" fill="url(#silverArmor)" stroke="#4b6584" stroke-width="3.5"/>
-    <!-- Center Heart Mirror (护心镜) -->
-    <circle cx="0" cy="-105" r="14" fill="#f5f6fa" stroke="#f1c40f" stroke-width="3"/>
-    <circle cx="0" cy="-105" r="10" fill="#74b9ff" opacity=".85"/>
-    <circle cx="-3" cy="-108" r="3" fill="#ffffff" opacity=".8"/>
-    <!-- Armor Straps & Belt with Lion Buckle -->
-    <path d="M-28-82 Q0-76 28-82" stroke="#f1c40f" stroke-width="5" fill="none"/>
-    <circle cx="0" cy="-79" r="6" fill="#e67e22" stroke="#b7791f" stroke-width="1.5"/>
+    <!-- Heavy Mingguang Torso Armor (银白玄铁明光铠) -->
+    <path d="M-35 -145 C-42 -110 -32 -90 -28 -88 Q0 -80 28 -88 C32 -90 42 -110 35 -145 Q0 -155 -35 -145 Z" fill="url(#silverArmor)" stroke="#2c3e50" stroke-width="3.5"/>
+    <!-- Dual Twin Heart Mirrors (前后双明光镜) -->
+    <ellipse cx="-12" cy="-115" rx="10" ry="14" fill="#ffffff" stroke="#f1c40f" stroke-width="2.5"/>
+    <ellipse cx="-13" cy="-117" rx="7" ry="10" fill="#74b9ff" opacity=".85"/>
+    <circle cx="-15" cy="-120" r="2.5" fill="#ffffff"/>
 
-    <!-- Pauldrons (披膊) -->
-    <path d="M-30-130 Q-52-124 -46-96 Q-32-90 -24-110 Z" fill="#b2bec3" stroke="#4b6584" stroke-width="3"/>
-    <path d="M30-130 Q52-124 46-96 Q32-90 24-110 Z" fill="#b2bec3" stroke="#4b6584" stroke-width="3"/>
+    <ellipse cx="12" cy="-115" rx="10" ry="14" fill="#ffffff" stroke="#f1c40f" stroke-width="2.5"/>
+    <ellipse cx="11" cy="-117" rx="7" ry="10" fill="#74b9ff" opacity=".85"/>
+    <circle cx="9" cy="-120" r="2.5" fill="#ffffff"/>
 
-    <!-- Celestial Soldier Face & Beard -->
-    <path d="M-14-162 Q-18-138 0-134 Q18-138 14-162 Z" fill="#fed330" stroke="#b7791f" stroke-width="2"/>
-    <path d="M-10-142 Q0-138 10-142" stroke="#1e272e" stroke-width="3" fill="none" stroke-linecap="round"/>
-    <circle cx="-5" cy="-148" r="2" fill="#1e272e"/>
-    <circle cx="5" cy="-148" r="2" fill="#1e272e"/>
+    <!-- Golden Beast Belt (金兽蛮带) -->
+    <path d="M-30 -90 Q0 -82 30 -90" stroke="#f1c40f" stroke-width="6" fill="none"/>
+    <circle cx="0" cy="-86" r="8" fill="#d35400" stroke="#f39c12" stroke-width="2"/>
 
-    <!-- Phoenix-Wing Helmet (凤翅战盔) -->
-    <path d="M-22-156 Q-28-196 0-205 Q28-196 22-156 Z" fill="url(#silverArmor)" stroke="#4b6584" stroke-width="3.5"/>
-    <!-- Golden Brow & Visor -->
-    <path d="M-24-156 Q0-166 24-156 L20-164 Q0-174 -20-164 Z" fill="#f1c40f" stroke="#b7791f" stroke-width="2"/>
-    <!-- Helmet Phoenix Wings -->
-    <path d="M-22-172 Q-44-186 -38-208 Q-26-196 -18-185 Z" fill="#dfe6e9" stroke="#4b6584" stroke-width="2.5"/>
-    <path d="M22-172 Q44-186 38-208 Q26-196 18-185 Z" fill="#dfe6e9" stroke="#4b6584" stroke-width="2.5"/>
-    <path d="M0-205 L-3-224 L0-228 L3-224 Z" fill="#e74c3c" stroke="#c0392b" stroke-width="1.5"/>
+    <!-- Heavy Dragon Pauldrons (龙首护肩) -->
+    <path d="M-32 -145 C-58 -138 -54 -105 -32 -100 C-22 -115 -20 -130 -32 -145 Z" fill="url(#silverArmor)" stroke="#2c3e50" stroke-width="3"/>
+    <path d="M32 -145 C58 -138 54 -105 32 -100 C22 -115 20 -130 32 -145 Z" fill="url(#silverArmor)" stroke="#2c3e50" stroke-width="3"/>
+
+    <!-- Sharp Armored Helmet & Visor (凤翅盔与护颊) -->
+    <path d="M-18 -170 C-24 -145 -15 -135 0 -132 C15 -135 24 -145 18 -170 Z" fill="#fed330" stroke="#b7791f" stroke-width="2"/>
+    <!-- Glowing Visor Slit -->
+    <path d="M-12 -152 L12 -152" stroke="#e74c3c" stroke-width="3.5" stroke-linecap="round"/>
+    <path d="M-24 -165 C-32 -212 0 -225 0 -225 C0 -225 32 -212 24 -165 Z" fill="url(#silverArmor)" stroke="#2c3e50" stroke-width="3.5"/>
+    <path d="M-26 -165 Q0 -178 26 -165 L22 -176 Q0 -188 -22 -176 Z" fill="#f1c40f" stroke="#b7791f" stroke-width="2"/>
+    <!-- Phoenix Crest Wings on Helmet -->
+    <path d="M-24 -185 C-52 -205 -44 -230 -22 -200 Z" fill="#dfe6e9" stroke="#2c3e50" stroke-width="2.5"/>
+    <path d="M24 -185 C52 -205 44 -230 22 -200 Z" fill="#dfe6e9" stroke="#2c3e50" stroke-width="2.5"/>
+    <!-- Crimson Plume -->
+    <path d="M0 -225 Q-6 -255 4 -250 Q10 -235 0 -225 Z" fill="#e74c3c"/>
+
+    <!-- Gripping Gauntlets on Spear -->
+    <circle cx="28" cy="-115" r="8" fill="#f1c40f" stroke="#b7791f" stroke-width="2"/>
+    <circle cx="34" cy="-85" r="8" fill="#f1c40f" stroke="#b7791f" stroke-width="2"/>
 
     <!-- 12-Foot Red-Tasseled Spear (丈二红缨枪) -->
-    <g transform="rotate(${spearAngle} 32 -100)">
-      <!-- Long Ash Shaft -->
-      <line x1="32" y1="-270" x2="32" y2="40" stroke="#4b6584" stroke-width="6" stroke-linecap="round"/>
-      <line x1="33" y1="-268" x2="33" y2="38" stroke="#dfe6e9" stroke-width="1.5" opacity=".5"/>
-      <!-- Scarlet Spear Tassel (红缨) -->
-      <path d="M26-260 Q12-242 18-218 Q32-230 38-260 Z" fill="#e74c3c" stroke="#c0392b" stroke-width="1.5"/>
-      <path d="M38-260 Q48-245 42-225 Q32-232 26-260 Z" fill="#ff4757" opacity=".85"/>
-      <!-- Keen Steel Spearhead -->
-      <path d="M32-302 L24-266 L32-260 L40-266 Z" fill="#f5f6fa" stroke="#74b9ff" stroke-width="2.5"/>
-      <line x1="32" y1="-300" x2="32" y2="-260" stroke="#ffffff" stroke-width="2"/>
+    <g transform="rotate(${spearAngle} 30 -105)">
+      <line x1="30" y1="-320" x2="30" y2="45" stroke="#2c3e50" stroke-width="6.5" stroke-linecap="round"/>
+      <line x1="31" y1="-318" x2="31" y2="42" stroke="#74b9ff" stroke-width="2" opacity=".6"/>
+      <!-- Scarlet Tassel -->
+      <path d="M22 -270 C6 -245 16 -215 30 -230 C44 -215 54 -245 38 -270 Z" fill="#e74c3c" stroke="#c0392b" stroke-width="1.5"/>
+      <path d="M30 -270 C38 -250 35 -225 30 -230" stroke="#ff7675" stroke-width="3"/>
+      <!-- Gleaming Diamond Spearhead -->
+      <path d="M30 -335 L20 -285 L30 -270 L40 -285 Z" fill="#ffffff" stroke="#74b9ff" stroke-width="2.5"/>
+      <line x1="30" y1="-330" x2="30" y2="-272" stroke="#0984e3" stroke-width="2.5"/>
     </g>
-
-    <!-- Hands gripping spear -->
-    <circle cx="30" cy="-105" r="7" fill="#fed330" stroke="#b7791f" stroke-width="2"/>
-    <circle cx="34" cy="-75" r="7" fill="#fed330" stroke="#b7791f" stroke-width="2"/>
   </g>`;
 }
 
@@ -72,51 +76,63 @@ function soldierSvg(index: number): string {
  * Shanghai Animation Film Studio 1961 Sun Wukong head with Peking Opera heart-shaped face paint.
  */
 function wukongHeadSvg(): string {
-  return `<!-- Sun Wukong Base Mane (金棕色浓密美猴王鬃毛) -->
-    <path d="M-48-285 C-62-265 -58-235 -40-218 C-30-208 -15-202 0-202 C15-202 30-208 40-218 C58-235 62-265 48-285 C42-302 25-320 0-320 C-25-320 -42-302 -48-285 Z" fill="#935817" stroke="#683b0d" stroke-width="3"/>
-    <path d="M-45-275 C-56-260 -52-240 -38-228 M45-275 C56-260 52-240 38-228" fill="none" stroke="#b7791f" stroke-width="4.5" stroke-linecap="round"/>
-    <path d="M-30-295 C-42-280 -40-260 -30-245 M30-295 C42-280 40-260 30-245" fill="none" stroke="#d68910" stroke-width="3" stroke-linecap="round"/>
-
-    <!-- Ears (猴王灵耳) -->
-    <path d="M-42-272 C-56-274 -58-248 -42-244 Z" fill="#b7791f" stroke="#784212" stroke-width="2.5"/>
-    <path d="M-44-266 C-50-267 -51-255 -43-252" stroke="#fab1a0" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-    <path d="M42-272 C56-274 58-248 42-244 Z" fill="#b7791f" stroke="#784212" stroke-width="2.5"/>
-    <path d="M44-266 C50-267 51-255 43-252" stroke="#fab1a0" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-
-    <!-- Peking Opera Heart-shaped Face Paint (外红轮廓) -->
-    <path d="M0-288 C-16-306 -44-300 -43-268 C-41-244 -18-230 0-220 C18-230 41-244 43-268 C44-300 16-306 0-288 Z" fill="#c0292b" stroke="#8a1515" stroke-width="3"/>
-
-    <!-- Inner Jade-White Delicate Face Base (内层细腻玉白面底) -->
-    <path d="M0-283 C-13-298 -35-293 -35-268 C-33-248 -14-236 0-226 C14-236 33-248 35-268 C35-293 13-298 0-283 Z" fill="#fff9e6" stroke="#eed99f" stroke-width="1.2"/>
-
-    <!-- Ape Snout & Playful Smile (戏曲神采猴嘴与鼻吻) -->
-    <path d="M-18-228 C-12-216 0-214 0-214 C0-214 12-216 18-228" fill="#fed330" opacity=".3"/>
-    <path d="M-15-234 Q0-226 15-234" stroke="#921214" stroke-width="3" fill="none" stroke-linecap="round"/>
-    <path d="M-6-229 Q0-225 6-229" stroke="#c0292b" stroke-width="2" fill="none"/>
-    <path d="M-4-246 Q0-250 4-246 Q0-243 -4-246 Z" fill="#c0292b"/>
-
-    <!-- Theatrical Flying Eyebrows (戏曲倒八字飞扬眉峰) -->
-    <path d="M-2-277 Q-12-281 -33-291 Q-16-285 -2-277 Z" fill="#14171a"/>
-    <path d="M2-277 Q12-281 33-291 Q16-285 2-277 Z" fill="#14171a"/>
-
-    <!-- Golden Fiery Eyes (金睛火眼) -->
-    <g id="eyes">
-      <!-- Left Eye -->
-      <path d="M-28-268 C-26-275 -12-276 -8-269 C-12-262 -26-262 -28-268 Z" fill="#ffd54f" stroke="#14171a" stroke-width="2"/>
-      <circle cx="-18" cy="-268" r="3.6" fill="#111827"/>
-      <circle cx="-19" cy="-269" r="1.4" fill="#ffffff"/>
-      <!-- Right Eye -->
-      <path d="M8-269 C12-276 26-275 28-268 C26-262 12-262 8-269 Z" fill="#ffd54f" stroke="#14171a" stroke-width="2"/>
-      <circle cx="18" cy="-268" r="3.6" fill="#111827"/>
-      <circle cx="17" cy="-269" r="1.4" fill="#ffffff"/>
+  return `<!-- Anime Wukong Spiky Golden Mane (风掣金鬃飞扬发簇) -->
+    <g id="wukong-hair">
+      <!-- Back hair spikes -->
+      <path d="M-65 -285 C-95 -295 -90 -255 -72 -235 C-90 -230 -85 -200 -62 -190 C-35 -165 0 -170 0 -170 C0 -170 35 -165 62 -190 C85 -200 90 -230 72 -235 C90 -255 95 -295 65 -285 C80 -325 50 -355 25 -340 C10 -355 -10 -355 -25 -340 C-50 -355 -80 -325 -65 -285 Z" fill="#b7791f" stroke="#683b0d" stroke-width="3"/>
+      <!-- Front layered spikes with anime shading -->
+      <path d="M-55 -295 C-80 -275 -70 -245 -48 -230 C-38 -215 -18 -205 0 -205 C18 -205 38 -215 48 -230 C70 -245 80 -275 55 -295 C68 -330 35 -345 0 -335 C-35 -345 -68 -330 -55 -295 Z" fill="#d68910" stroke="#935817" stroke-width="3"/>
+      <!-- Highlights on spiky hair locks -->
+      <path d="M-40 -310 Q-60 -285 -45 -255 M40 -310 Q60 -285 45 -255 M0 -330 Q-15 -300 -5 -270 M0 -330 Q15 -300 5 -270" stroke="#f1c40f" stroke-width="4.5" fill="none" stroke-linecap="round"/>
     </g>
 
-    <!-- Fiery Eye Rays (金睛极光束 - 八卦炉受炼涅槃态) -->
+    <!-- Ears (猴王尖耳与茸毛) -->
+    <path d="M-46 -265 C-65 -270 -68 -240 -48 -235 Z" fill="#d68910" stroke="#784212" stroke-width="2.5"/>
+    <path d="M-48 -260 C-56 -262 -58 -246 -48 -243" stroke="#fab1a0" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M46 -265 C65 -270 68 -240 48 -235 Z" fill="#d68910" stroke="#784212" stroke-width="2.5"/>
+    <path d="M48 -260 C56 -262 58 -246 48 -243" stroke="#fab1a0" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+    <!-- Sharp Anime Facial Mask & Heart-shaped Face Paint (美猴王美目心形脸谱) -->
+    <!-- Carmine Face Mask Contour -->
+    <path d="M0 -285 C-22 -308 -52 -300 -50 -262 C-48 -232 -22 -212 0 -195 C22 -212 48 -232 50 -262 C52 -300 22 -308 0 -285 Z" fill="#c0292b" stroke="#781113" stroke-width="3.5"/>
+
+    <!-- Inner Warm Porcelain/Jade-White Face Base (内层羊脂玉面底) -->
+    <path d="M0 -280 C-18 -298 -42 -292 -40 -262 C-38 -236 -18 -218 0 -202 C18 -218 38 -236 40 -262 C42 -292 18 -298 0 -280 Z" fill="#fffdf5" stroke="#ffdca3" stroke-width="1.5"/>
+
+    <!-- Theatrical Eyeliner & Mask Flourishes (京剧凤眼勾线) -->
+    <path d="M-38 -262 C-26 -278 -12 -282 0 -282 C12 -282 26 -278 38 -262" fill="none" stroke="#c0292b" stroke-width="4.5" stroke-linecap="round"/>
+    <path d="M-44 -266 Q-32 -282 -18 -285 M44 -266 Q32 -282 18 -285" fill="none" stroke="#921214" stroke-width="3" stroke-linecap="round"/>
+
+    <!-- Sharp Determined Snout & Monkey Grin (英武猴嘴与神采) -->
+    <path d="M-18 -218 C-12 -206 0 -204 0 -204 C0 -204 12 -206 18 -218" fill="#e67e22" opacity=".25"/>
+    <path d="M-16 -224 Q0 -214 16 -224" stroke="#781113" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+    <path d="M-6 -219 Q0 -215 6 -219" stroke="#c0292b" stroke-width="2.5" fill="none"/>
+    <path d="M-5 -236 Q0 -240 5 -236 Q0 -232 -5 -236 Z" fill="#781113"/>
+
+    <!-- Piercing Anime Eyebrows (倒八字轩昂剑眉) -->
+    <path d="M-3 -272 Q-16 -282 -42 -295 Q-20 -286 -3 -272 Z" fill="#14171a"/>
+    <path d="M3 -272 Q16 -282 42 -295 Q20 -286 3 -272 Z" fill="#14171a"/>
+
+    <!-- Piercing Fiery Golden Eyes (金睛火眼) -->
+    <g id="eyes">
+      <!-- Left Eye -->
+      <path d="M-34 -258 C-32 -270 -14 -272 -8 -260 C-14 -250 -32 -250 -34 -258 Z" fill="#ffd700" stroke="#14171a" stroke-width="2.5"/>
+      <circle cx="-20" cy="-260" r="4.2" fill="#111827"/>
+      <circle cx="-20" cy="-260" r="2.2" fill="#d35400"/>
+      <circle cx="-22" cy="-262" r="1.8" fill="#ffffff"/>
+      <!-- Right Eye -->
+      <path d="M8 -260 C14 -272 32 -270 34 -258 C32 -250 14 -250 8 -260 Z" fill="#ffd700" stroke="#14171a" stroke-width="2.5"/>
+      <circle cx="20" cy="-260" r="4.2" fill="#111827"/>
+      <circle cx="20" cy="-260" r="2.2" fill="#d35400"/>
+      <circle cx="18" cy="-262" r="1.8" fill="#ffffff"/>
+    </g>
+
+    <!-- Fiery Eye Rays (金睛极光束) -->
     <g id="eye-rays" style="display:none;opacity:0;">
-      <polygon points="-18,-268 -720,-380 -720,-156" fill="url(#eyeRayGradient)" opacity=".85"/>
-      <polygon points="18,-268 720,-380 720,-156" fill="url(#eyeRayGradient)" transform="scale(-1 1)" opacity=".85"/>
-      <line x1="-18" y1="-268" x2="-700" y2="-268" stroke="#ffffff" stroke-width="4.5" filter="url(#eyeGlow)"/>
-      <line x1="18" y1="-268" x2="700" y2="-268" stroke="#ffffff" stroke-width="4.5" filter="url(#eyeGlow)"/>
+      <polygon points="-20,-260 -780,-380 -780,-140" fill="url(#eyeRayGradient)" opacity=".9"/>
+      <polygon points="20,-260 780,-380 780,-140" fill="url(#eyeRayGradient)" transform="scale(-1 1)" opacity=".9"/>
+      <line x1="-20" y1="-260" x2="-750" y2="-260" stroke="#ffffff" stroke-width="6" filter="url(#eyeGlow)"/>
+      <line x1="20" y1="-260" x2="750" y2="-260" stroke="#ffffff" stroke-width="6" filter="url(#eyeGlow)"/>
     </g>`;
 }
 
@@ -217,6 +233,23 @@ export function actorsSvg(): string {
         <path d="M-27-210 Q-105-255 -215-185 Q-170-130 -235-80 Q-130-95 -110-45 Q-75-105 -32-120 Z" fill="url(#cape)" stroke="#9b3930" stroke-width="5"/>
         <path d="M-36-198 Q-115-200 -190-155 M-40-180 Q-110-120 -192-100" fill="none" stroke="#f1c40f" stroke-width="3" opacity=".6"/>
         <path d="M-215-185 Q-225-130 -235-80" stroke="#ffd700" stroke-width="4" fill="none"/>
+        <path d="M-30-205 C-90-220 -150-160 -195-100 C-160-80 -100-60 -40-110 Z" fill="#921214" opacity=".4"/>
+        <path d="M-195-100 Q-230-60 -260-20 Q-200-30 -160-70 Z" fill="url(#cape)" stroke="#c0392b" stroke-width="3"/>
+      </g>
+
+      <!-- Dynamic Articulated Arms and Hands Gripping Staff -->
+      <g id="hero-arms">
+        <!-- Rear Arm (左手握棍) -->
+        <path d="M-32-185 C-58-165 -65-135 -48-105 C-36-115 -30-140 -22-170 Z" fill="#935817" stroke="#683b0d" stroke-width="2.5"/>
+        <path d="M-48-105 Q-60-85 -42-70" stroke="#f1c40f" stroke-width="9" fill="none" stroke-linecap="round"/>
+        <circle cx="-42" cy="-68" r="9" fill="#f5cd79" stroke="#b7791f" stroke-width="2.5"/>
+        <path d="M-48-72 Q-42-64 -36-72 M-46-66 Q-42-60 -38-66" stroke="#935817" stroke-width="2" fill="none"/>
+
+        <!-- Lead Forearm (右手引棍) -->
+        <path d="M28-185 C55-160 52-130 42-100 C30-110 24-135 18-170 Z" fill="#935817" stroke="#683b0d" stroke-width="2.5"/>
+        <path d="M42-100 Q55-80 68-55" stroke="#f1c40f" stroke-width="9" fill="none" stroke-linecap="round"/>
+        <circle cx="68" cy="-52" r="9.5" fill="#f5cd79" stroke="#b7791f" stroke-width="2.5"/>
+        <path d="M62-56 Q68-48 74-56 M64-50 Q68-44 72-50" stroke="#935817" stroke-width="2" fill="none"/>
       </g>
 
       <!-- ================= 5 NARRATIVE COSTUMES ================= -->
@@ -237,37 +270,37 @@ export function actorsSvg(): string {
 
       <!-- 2. 美猴王常服 (costumeMonkeyKing, Scenes 4, 10) -->
       <g id="costume-monkey">
-        <!-- Soap-Leather Black Boots with White Soles (皂色黑靴) -->
-        <path d="M-64-18 L-62 0 L-14 0 L-18-20 Z" fill="#1e272e" stroke="#0a0f14" stroke-width="3"/>
-        <path d="M-66 0 L-12 0" stroke="#f5f6fa" stroke-width="4.5" stroke-linecap="round"/>
-        <path d="M16-20 L12 0 L64 0 L60-18 Z" fill="#1e272e" stroke="#0a0f14" stroke-width="3"/>
-        <path d="M10 0 L66 0" stroke="#f5f6fa" stroke-width="4.5" stroke-linecap="round"/>
+        <!-- Wide Martial Horse Stance Legs (扎实沉稳马步) -->
+        <!-- Left Leg -->
+        <path d="M-30 -115 C-65 -80 -85 -45 -80 0 L-40 0 C-42 -35 -35 -70 -15 -115 Z" fill="#d63031" stroke="#921214" stroke-width="3.5"/>
+        <!-- Black Soap-Leather Boot with White Sole -->
+        <path d="M-80 -25 L-82 0 L-38 0 L-40 -25 Z" fill="#1e272e" stroke="#0a0f14" stroke-width="3"/>
+        <path d="M-84 0 L-36 0" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
 
-        <!-- Scarlet Lantern Balloon Trousers (大红灯笼中裤) -->
-        <path d="M-38-115 C-68-75 -65-25 -42-18 C-24-20 -20-70 -16-115 Z" fill="#d63031" stroke="#921214" stroke-width="4"/>
-        <path d="M16-115 C20-70 24-20 42-18 C65-25 68-75 38-115 Z" fill="#d63031" stroke="#921214" stroke-width="4"/>
+        <!-- Right Leg -->
+        <path d="M15 -115 C35 -70 42 -35 40 0 L80 0 C85 -45 65 -80 30 -115 Z" fill="#d63031" stroke="#921214" stroke-width="3.5"/>
+        <path d="M38 -25 L36 0 L82 0 L80 -25 Z" fill="#1e272e" stroke="#0a0f14" stroke-width="3"/>
+        <path d="M34 0 L84 0" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
 
-        <!-- Tiger-Skin Wrap Apron (斑斓虎皮斜围裙) -->
-        <path d="M-48-162 L48-154 L44-90 L-42-110 Z" fill="#e67e22" stroke="#c0392b" stroke-width="4"/>
-        <!-- Tiger Stripes -->
-        <path d="M-36-150 Q-26-144 -30-130 M-18-155 Q-10-140 -14-124 M12-148 Q22-136 18-120 M32-142 Q40-130 36-112" stroke="#1e272e" stroke-width="4.5" stroke-linecap="round" fill="none"/>
-        <!-- Crimson Velvet Trim -->
-        <path d="M-48-162 L-42-110 L44-90 L48-154" stroke="#c0392b" stroke-width="4.5" fill="none"/>
-        <path d="M-50-160 Q0-154 50-160" stroke="#d63031" stroke-width="6" fill="none"/>
+        <!-- Tiger-Skin Wrap Apron with Natural Fur Edge (斑斓虎皮斜围裙) -->
+        <path d="M-52 -162 C-30 -155 30 -155 52 -152 L48 -80 C20 -72 -20 -75 -46 -98 Z" fill="#e67e22" stroke="#c0392b" stroke-width="3.5"/>
+        <!-- Dynamic Organic Tiger Stripes -->
+        <path d="M-40 -150 Q-28 -140 -35 -125 M-22 -155 Q-12 -135 -18 -118 M15 -148 Q26 -132 18 -112 M35 -140 Q44 -124 38 -105" stroke="#1e272e" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+        <path d="M-52 -162 Q0 -152 52 -152" stroke="#d63031" stroke-width="7" fill="none"/>
 
         <!-- Iconic Goose-Yellow Mandarin Jacket (鹅黄对襟小衫) -->
-        <path d="M-46-215 Q-64-180 -48-156 L46-156 Q62-180 44-215 Z" fill="#f5c518" stroke="#d4ac0d" stroke-width="4.5"/>
-        <path d="M0-215 L0-156" stroke="#1e272e" stroke-width="3"/>
-        <!-- Frog Buttons (传统盘扣) -->
-        <line x1="-8" y1="-200" x2="8" y2="-200" stroke="#1e272e" stroke-width="3" stroke-linecap="round"/>
-        <line x1="-8" y1="-180" x2="8" y2="-180" stroke="#1e272e" stroke-width="3" stroke-linecap="round"/>
-        <circle cx="0" cy="-200" r="2.5" fill="#c0392b"/>
-        <circle cx="0" cy="-180" r="2.5" fill="#c0392b"/>
+        <path d="M-52 -215 C-75 -175 -60 -150 -44 -145 L44 -145 C60 -150 75 -175 52 -215 Q0 -225 -52 -215 Z" fill="#f5c518" stroke="#d4ac0d" stroke-width="4.5"/>
+        <path d="M0 -215 L0 -145" stroke="#1e272e" stroke-width="3.5"/>
+        <!-- Traditional Frog Buttons (盘扣) -->
+        <line x1="-10" y1="-195" x2="10" y2="-195" stroke="#1e272e" stroke-width="3.5" stroke-linecap="round"/>
+        <line x1="-10" y1="-175" x2="10" y2="-175" stroke="#1e272e" stroke-width="3.5" stroke-linecap="round"/>
+        <circle cx="0" cy="-195" r="3" fill="#c0392b"/>
+        <circle cx="0" cy="-175" r="3" fill="#c0392b"/>
 
-        <!-- Fluttering Emerald Green Scarf (翠绿色轻盈飘逸领巾) -->
-        <path d="M-14-226 C-32-234 -58-228 -74-242 C-62-220 -38-216 -12-218 Z" fill="#2ecc71" stroke="#27ae60" stroke-width="2.5"/>
-        <path d="M8-224 C-4-210 -28-200 -52-206 C-40-194 -16-196 10-214 Z" fill="#27ae60" stroke="#1abc9c" stroke-width="2"/>
-        <circle cx="0" cy="-222" r="5" fill="#2ecc71" stroke="#27ae60" stroke-width="2"/>
+        <!-- Dynamic Fluttering Emerald Green Scarf (翠绿色飞扬领巾) -->
+        <path d="M-15 -228 C-35 -245 -75 -240 -95 -260 C-78 -228 -45 -220 -12 -218 Z" fill="#2ecc71" stroke="#27ae60" stroke-width="3"/>
+        <path d="M10 -226 C-4 -210 -35 -195 -68 -202 C-50 -185 -18 -190 12 -212 Z" fill="#27ae60" stroke="#1abc9c" stroke-width="2.5"/>
+        <circle cx="0" cy="-224" r="6" fill="#2ecc71" stroke="#27ae60" stroke-width="2.5"/>
       </g>
 
       <!-- 3. 弼马温官袍 (costumeBima, Scenes 5-9) -->
@@ -290,24 +323,40 @@ export function actorsSvg(): string {
 
       <!-- 4. 齐天大圣神甲 (costumeGreatSage, Scenes 11-13, 20-22) -->
       <g id="costume-greatsage">
-        <!-- Combat Boots & Greaves -->
-        <path d="M-64-18 L-62 0 L-14 0 L-18-20 Z" fill="#1e272e" stroke="#ffd700" stroke-width="2.5"/>
-        <path d="M16-20 L12 0 L64 0 L60-18 Z" fill="#1e272e" stroke="#ffd700" stroke-width="2.5"/>
-        <path d="M-38-116 L-62-18 L-16 0 L-18-116 M18-116 L16 0 L62-18 L38-116" fill="#c0392b" stroke="#ffd700" stroke-width="2.5"/>
+        <!-- Deep Martial Stance Legs & Greaves (英武弓步与战靴) -->
+        <!-- Rear Leg (Left) braced firmly with tension -->
+        <path d="M-35 -110 C-70 -70 -95 -30 -90 0 L-45 0 C-48 -35 -40 -70 -20 -110 Z" fill="#c0392b" stroke="#781113" stroke-width="3"/>
+        <path d="M-85 -35 C-92 -15 -90 0 -55 0 L-50 -25 Z" fill="#1e272e" stroke="#ffd700" stroke-width="3"/>
+        <path d="M-92 0 L-45 0" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round"/>
 
-        <!-- Golden Mountain-Pattern Armor (锁子黄金甲 / 山字甲) -->
-        <path d="M-50-215 Q-70-178 -54-130 L54-130 Q70-178 50-215 Z" fill="url(#goldArmor)" stroke="#b7791f" stroke-width="4.5"/>
-        <path d="M-30-192 Q0-184 30-192 M-34-166 Q0-156 34-166 M-24-138 Q0-132 24-138" stroke="#b7791f" stroke-width="3.5" fill="none"/>
+        <!-- Lead Leg (Right) deeply bent into front lunge -->
+        <path d="M15 -110 C35 -70 55 -40 75 -20 L70 0 L25 0 C30 -25 20 -65 5 -110 Z" fill="#c0392b" stroke="#781113" stroke-width="3"/>
+        <path d="M50 -35 L75 -20 L70 0 L25 0 Z" fill="#1e272e" stroke="#ffd700" stroke-width="3"/>
+        <path d="M25 0 L72 0" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round"/>
 
-        <!-- Beast-Head Swallowed Breastplate (兽面吞头胸甲) -->
-        <path d="M-28-176 C-34-150 -22-132 0-130 C22-132 34-150 28-176 Z" fill="#d35400" stroke="#b7791f" stroke-width="3"/>
-        <circle cx="-10" cy="-156" r="3" fill="#ffd700"/>
-        <circle cx="10" cy="-156" r="3" fill="#ffd700"/>
-        <path d="M-6-140 Q0-146 6-140" stroke="#ffd700" stroke-width="2.5" fill="none"/>
+        <!-- Tassets / Thigh Guards (明光甲裙与红锦蔽膝) -->
+        <path d="M-45 -125 C-65 -90 -60 -45 -35 -35 C-15 -40 -15 -85 -20 -125 Z" fill="url(#goldArmor)" stroke="#b7791f" stroke-width="3.5"/>
+        <path d="M45 -125 C65 -90 60 -45 35 -35 C15 -40 15 -85 20 -125 Z" fill="url(#goldArmor)" stroke="#b7791f" stroke-width="3.5"/>
+        <!-- Central Red Silk Front Apron (前遮红锦) -->
+        <path d="M-22 -120 L22 -120 L16 -40 L-16 -40 Z" fill="#c0392b" stroke="#ffd700" stroke-width="2.5"/>
 
-        <!-- Dragon Pauldrons & Bracers (明光护膊与金丝龙首) -->
-        <path d="M-48-208 Q-78-190 -66-140 Q-48-145 -38-175 Z" fill="url(#goldArmor)" stroke="#b7791f" stroke-width="3"/>
-        <path d="M48-208 Q78-190 66-140 Q48-145 38-175 Z" fill="url(#goldArmor)" stroke="#b7791f" stroke-width="3"/>
+        <!-- Golden Mountain-Pattern Cuirass (锁子黄金甲 / 山字甲) -->
+        <path d="M-55 -215 C-80 -170 -65 -125 -45 -120 Q0 -110 45 -120 C65 -125 80 -170 55 -215 Q0 -225 -55 -215 Z" fill="url(#goldArmor)" stroke="#b7791f" stroke-width="4.5"/>
+        <!-- Armor scales pattern -->
+        <path d="M-36 -195 Q0 -185 36 -195 M-40 -168 Q0 -156 40 -168 M-30 -140 Q0 -130 30 -140" stroke="#b7791f" stroke-width="3.5" fill="none"/>
+
+        <!-- Beast-Head Swallowed Breastplate (威严吞头兽首) -->
+        <path d="M-30 -180 C-40 -150 -25 -125 0 -122 C25 -125 40 -150 30 -180 Z" fill="#d35400" stroke="#b7791f" stroke-width="3"/>
+        <circle cx="-12" cy="-158" r="4" fill="#ffd700" stroke="#1e272e" stroke-width="1.5"/>
+        <circle cx="12" cy="-158" r="4" fill="#ffd700" stroke="#1e272e" stroke-width="1.5"/>
+        <path d="M-8 -138 Q0 -146 8 -138" stroke="#ffd700" stroke-width="3" fill="none"/>
+
+        <!-- Fierce Dragon Pauldrons & Armored Bracers (霸气龙首护肩与明光臂甲) -->
+        <path d="M-50 -212 C-88 -195 -82 -145 -55 -135 C-42 -145 -38 -180 -50 -212 Z" fill="url(#goldArmor)" stroke="#b7791f" stroke-width="3.5"/>
+        <path d="M50 -212 C88 -195 82 -145 55 -135 C42 -145 38 -180 50 -212 Z" fill="url(#goldArmor)" stroke="#b7791f" stroke-width="3.5"/>
+        <!-- Golden Wristguards -->
+        <path d="M-55 -135 L-42 -95 L-25 -100 L-38 -140 Z" fill="url(#goldArmor)" stroke="#b7791f" stroke-width="2.5"/>
+        <path d="M55 -135 L42 -95 L25 -100 L38 -140 Z" fill="url(#goldArmor)" stroke="#b7791f" stroke-width="2.5"/>
       </g>
 
       <!-- 5. 八卦炉受炼与涅槃态 (costumeFurnaceGold, Scenes 14-19) -->
@@ -368,16 +417,14 @@ export function actorsSvg(): string {
           <circle cx="16" cy="-306" r="3.5" fill="#e74c3c"/>
         </g>
 
-        <!-- Long Curved Pheasant Feathers (细长柔韧雉鸡双翎 - 随 featherAngle 摆动) -->
+        <!-- Long Curved Pheasant Feathers (修长飘逸大雉鸡翎 - 随 featherAngle 摆动) -->
         <g id="feather-left">
-          <!-- Feather Plume Left -->
-          <path d="M-10-325 C-35-390 -95-455 -145-475 C-180-492 -210-465 -198-438 C-190-420 -162-418 -145-428 C-112-448 -65-402 -25-342 Z" fill="url(#featherBands)" stroke="#b7791f" stroke-width="2"/>
-          <path d="M-10-325 C-40-395 -100-455 -170-462" stroke="#ffffff" stroke-width="1.5" fill="none" opacity=".6"/>
+          <path d="M-12 -330 C-60 -420 -150 -500 -260 -520 C-180 -480 -90 -410 -10 -325 Z" fill="url(#featherBands)" stroke="#996515" stroke-width="2.5"/>
+          <path d="M-12 -330 C-60 -420 -150 -500 -260 -520" stroke="#ffffff" stroke-width="2" fill="none" opacity=".7"/>
         </g>
         <g id="feather-right">
-          <!-- Feather Plume Right -->
-          <path d="M10-325 C35-390 95-455 145-475 C180-492 210-465 198-438 C190-420 162-418 145-428 C112-448 65-402 25-342 Z" fill="url(#featherBands)" stroke="#b7791f" stroke-width="2"/>
-          <path d="M10-325 C40-395 100-455 170-462" stroke="#ffffff" stroke-width="1.5" fill="none" opacity=".6"/>
+          <path d="M12 -330 C60 -420 150 -500 260 -520 C180 -480 90 -410 10 -325 Z" fill="url(#featherBands)" stroke="#996515" stroke-width="2.5"/>
+          <path d="M12 -330 C60 -420 150 -500 260 -520" stroke="#ffffff" stroke-width="2" fill="none" opacity=".7"/>
         </g>
       </g>
 
@@ -392,20 +439,20 @@ export function actorsSvg(): string {
       <!-- Ruyi Jingu Bang (如意金箍棒: 两端云龙回纹金箍，中段玄铁，挥击半月弧光) -->
       <g id="hero-staff">
         <!-- Strike Crescent Halo (半月弧形挥击光弧) -->
-        <path id="staff-arc" d="M-60-480 C-140-300 -160-50 -80 160 C-40 60 -50-200 -30-430 Z" fill="url(#staffGold)" opacity="0" filter="url(#strikeGlow)"/>
+        <path id="staff-arc" d="M-80 -520 C-180 -320 -200 -30 -90 200 C-40 80 -60 -220 -40 -460 Z" fill="url(#staffGold)" opacity="0" filter="url(#strikeGlow)"/>
 
         <!-- Deep Meteoric Black Iron Shaft (深墨玄铁棒身) -->
-        <rect id="staff-shaft" x="-12" y="-450" width="24" height="600" rx="4" fill="url(#staffShaft)" stroke="#0a0c0e" stroke-width="2.5"/>
+        <rect id="staff-shaft" x="-14" y="-480" width="28" height="660" rx="6" fill="url(#staffShaft)" stroke="#0a0c0e" stroke-width="2.5"/>
         <!-- Inner Incandescent Molten Radiant Golden Core -->
-        <rect id="staff-core" x="-7" y="-450" width="14" height="600" rx="3" fill="url(#staffGlowGradient)" opacity="0"/>
+        <rect id="staff-core" x="-8" y="-480" width="16" height="660" rx="4" fill="url(#staffGlowGradient)" opacity="0"/>
 
         <!-- Top Dragon Meander Gold Cuff (两端精美云龙回纹金箍) -->
-        <rect x="-16" y="-495" width="32" height="48" rx="5" fill="url(#staffGold)" stroke="#805b00" stroke-width="2.5"/>
-        <path d="M-12-482 h24 M-12-468 h24 M-6-475 h12" stroke="#5c3800" stroke-width="2.5"/>
+        <rect x="-18" y="-525" width="36" height="52" rx="6" fill="url(#staffGold)" stroke="#805b00" stroke-width="3"/>
+        <path d="M-14 -510 h28 M-14 -495 h28 M-8 -502 h16" stroke="#5c3800" stroke-width="3"/>
 
         <!-- Bottom Dragon Meander Gold Cuff -->
-        <rect x="-16" y="147" width="32" height="48" rx="5" fill="url(#staffGold)" stroke="#805b00" stroke-width="2.5"/>
-        <path d="M-12-160 h24 M-12-174 h24 M-6-167 h12" stroke="#5c3800" stroke-width="2.5" transform="translate(0 334)"/>
+        <rect x="-18" y="145" width="36" height="52" rx="6" fill="url(#staffGold)" stroke="#805b00" stroke-width="3"/>
+        <path d="M-14 160 h28 M-14 175 h28 M-8 168 h16" stroke="#5c3800" stroke-width="3"/>
       </g>
 
       <!-- Celestial Riding Whip (弼马温马鞭) -->
@@ -440,6 +487,7 @@ export function updateActors(state: FilmState, root: HTMLElement) {
 
   const cape = root.querySelector<SVGGElement>('#cape-shape');
   const staff = root.querySelector<SVGGElement>('#hero-staff');
+  const heroArms = root.querySelector<SVGGElement>('#hero-arms');
   const whip = root.querySelector<SVGGElement>('#hero-whip');
   const eyes = root.querySelector<SVGGElement>('#eyes');
   const eyeRays = root.querySelector<SVGGElement>('#eye-rays');
@@ -504,7 +552,7 @@ export function updateActors(state: FilmState, root: HTMLElement) {
     staffCore.style.opacity = String(state.staffGlow * 0.95);
   }
   if (staffArc) {
-    staffArc.style.opacity = String(Math.max(0, (state.staffGlow - 0.25) * 1.33));
+    staffArc.style.display = 'none';
   }
 
   // Horse Whip (Only in Scene 6)
@@ -524,39 +572,85 @@ export function updateActors(state: FilmState, root: HTMLElement) {
     eyeRays.style.display = rayOpacity > 0.01 ? 'inline' : 'none';
   }
 
-  // Hero Positioning and Scene Camera Transforms
+  // Dynamic Martial Stance on Arms & Hands
+  const stance = state.heroStance || 'stand';
+  if (heroArms) {
+    if (state.staffVisible <= 0.05) {
+      heroArms.style.opacity = '0.3';
+    } else {
+      heroArms.style.opacity = '1';
+    }
+    if (stance === 'strike') {
+      heroArms.setAttribute('transform', 'translate(12 -28) rotate(-16)');
+    } else if (stance === 'crouch') {
+      heroArms.setAttribute('transform', 'translate(-8 14) rotate(12)');
+    } else if (stance === 'jump') {
+      heroArms.setAttribute('transform', 'translate(0 -32) rotate(-22)');
+    } else {
+      heroArms.setAttribute('transform', 'translate(0 0) rotate(0)');
+    }
+  }
+
+  // Hero Positioning, Squash & Stretch, and Scene Camera Transforms
   const centered = [14, 15, 16, 17, 18, 19, 21, 22].includes(state.scene);
   const heroX = state.scene === 2 ? 610 + state.raftX * 250 : centered ? 960 : state.heroX;
   const heroY = state.scene === 2 ? 793 : state.scene === 18 ? 1040 : state.heroY;
   const heroScale = state.scene === 18 ? state.heroScale * 1.48 : state.heroScale;
-  const hideForInsert = state.scene === 8 && state.progress > 0.45 && state.progress < 0.83;
   const vanish = state.scene === 3 && state.progress > 0.77 && state.progress < 0.81;
-  hero.style.opacity = state.scene === 1 || state.scene === 14 || hideForInsert || vanish ? '0' : String(Math.min(1, Math.max(0, heroScale)));
+  hero.style.opacity = state.scene === 1 || state.scene === 14 || vanish ? '0' : String(Math.min(1, Math.max(0, heroScale)));
 
   if (kneeling) {
     kneeling.style.opacity = state.scene === 14 ? '1' : '0';
   }
 
   const heightScale = state.scene === 14 ? heroScale * 0.62 : heroScale;
-  hero.setAttribute('transform', `translate(${heroX} ${heroY}) rotate(${state.heroRotation}) scale(${heroScale} ${heightScale})`);
+  const squashX = Number.isFinite(state.heroSquashX) ? state.heroSquashX : 1;
+  const squashY = Number.isFinite(state.heroSquashY) ? state.heroSquashY : 1;
+  const finalScaleX = heroScale * squashX;
+  const finalScaleY = heightScale * squashY;
 
-  // Celestial Soldier Army Ranks and Physics Choreography
+  let stanceOffsetY = 0;
+  let stanceRot = state.heroRotation;
+  if (stance === 'crouch') {
+    stanceOffsetY = 24; // lower center of gravity in martial horse stance
+    stanceRot += 6;
+  } else if (stance === 'strike') {
+    stanceOffsetY = -18; // spring up on explosive strike
+    stanceRot += -12;
+  } else if (stance === 'jump') {
+    stanceOffsetY = -42; // airborne leap
+    stanceRot += 14;
+  }
+  hero.setAttribute('transform', `translate(${heroX} ${heroY + stanceOffsetY}) rotate(${stanceRot}) scale(${finalScaleX} ${finalScaleY})`);
+
+  // Celestial Soldier Army Ranks: Wide Cinematic Battlefield Arc
   const soldiers = root.querySelectorAll<SVGGElement>('.soldier');
   soldiers.forEach((element, index) => {
     const side = index < 15 ? -1 : 1;
     const local = index % 15;
-    const row = Math.floor(local / 5);
-    const col = local % 5;
-    const targetX = side < 0 ? 70 + col * 102 + row * 24 : 1840 - col * 103 - row * 23;
-    const targetY = 744 + row * 75 + (col % 2) * 15;
-    const scale = 0.56 + row * 0.17;
-    const stagger = Math.min(1, Math.max(0, (state.soldierReveal * 1.35 - row * 0.12 - col * 0.055)));
-    const enterX = side * 370 * (1 - stagger);
+    const row = Math.floor(local / 5); // 0, 1, 2 (3 depth tiers)
+    const col = local % 5;             // 0..4 (5 columns per wing)
+
+    // Spread smoothly across left wing (x: 160-800) and right wing (x: 1120-1760)
+    const normCol = col / 4;
+    const baseX = side < 0
+      ? 160 + normCol * 640 + row * 28
+      : 1760 - normCol * 640 - row * 28;
+    const baseY = 720 + row * 65 + (col % 2) * 16 - Math.abs(normCol - 0.5) * 36;
+    const scale = 0.58 + row * 0.16;
+
+    const stagger = Math.min(1, Math.max(0, (state.soldierReveal * 1.4 - row * 0.14 - col * 0.04)));
+    const enterX = side * 420 * (1 - stagger);
     const scatter = state.soldierScatter;
-    const flyX = side * (150 + (4 - col) * 60 + row * 40) * scatter;
-    const flyY = (210 + (index * 73) % 200) * Math.sin(scatter * Math.PI * 0.9);
-    const rotate = side * (50 + (index * 19) % 85) * scatter;
-    element.style.opacity = String(Math.max(0, Math.min(1, stagger * (1 - scatter * 0.42))));
-    element.setAttribute('transform', `translate(${targetX + enterX + flyX} ${targetY - flyY}) rotate(${rotate}) scale(${scale})`);
+
+    // Radial blast explosion velocity away from hero center (heroX, 800)
+    const angleFromHero = Math.atan2(baseY - 780, baseX - 960);
+    const scatterDist = (260 + (index * 83) % 250) * scatter;
+    const flyX = Math.cos(angleFromHero) * scatterDist;
+    const flyY = Math.sin(angleFromHero) * scatterDist - (190 + (index * 47) % 160) * Math.sin(scatter * Math.PI);
+    const rotate = side * (45 + (index * 29) % 95) * scatter + (side < 0 ? 8 : -8);
+
+    element.style.opacity = String(Math.max(0, Math.min(1, stagger * (1 - scatter * 0.38))));
+    element.setAttribute('transform', `translate(${baseX + enterX + flyX} ${baseY + flyY}) rotate(${rotate}) scale(${scale})`);
   });
 }

@@ -353,6 +353,84 @@ function colorBurst(ctx: CanvasRenderingContext2D, state: FilmState) {
   ctx.globalAlpha = 1;
 }
 
+/**
+ * Anime Speedlines / Focus Impact Lines (动漫高能冲击速度线与焦点线)
+ */
+export function drawAnimeSpeedlines(ctx: CanvasRenderingContext2D, state: FilmState) {
+  if (!state.speedlines || state.speedlines <= 0.02) return;
+  const intensity = Math.min(1, state.speedlines);
+  const cx = state.heroX + 40;
+  const cy = state.heroY - 180;
+  const numLines = 54;
+
+  ctx.save();
+  ctx.globalAlpha = intensity * 0.72;
+  ctx.strokeStyle = '#fff8db';
+  ctx.shadowColor = '#f39c12';
+  ctx.shadowBlur = 10 * intensity;
+
+  for (let i = 0; i < numLines; i++) {
+    const baseAngle = (i / numLines) * Math.PI * 2;
+    const angle = baseAngle + (rand(i * 17 + state.frame) - 0.5) * 0.06;
+    const innerRadius = 240 + rand(i * 31 + state.frame) * 220;
+    const outerRadius = 1450;
+
+    const x1 = cx + Math.cos(angle) * innerRadius;
+    const y1 = cy + Math.sin(angle) * innerRadius;
+    const x2 = cx + Math.cos(angle) * outerRadius;
+    const y2 = cy + Math.sin(angle) * outerRadius;
+
+    ctx.lineWidth = 1 + rand(i * 43) * 4 * intensity;
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+/**
+ * Cinematic Foreground Flying Debris (擦着镜头边缘掠过的大型碎石残片)
+ */
+function foregroundDebris(ctx: CanvasRenderingContext2D, state: FilmState) {
+  if (state.debris <= 0 && state.shockwave <= 0) return;
+  const factor = Math.max(state.debris, state.shockwave);
+  if (factor <= 0.05) return;
+
+  const count = state.scene === 12 || state.scene === 19 || state.scene === 20 ? 8 : 4;
+  for (let i = 0; i < count; i++) {
+    const seed = i * 47 + state.scene * 13;
+    const speed = 1.6 + rand(seed) * 1.8;
+    const prog = (state.progress * speed + rand(seed + 1)) % 1;
+    const angle = rand(seed + 2) * Math.PI * 2;
+    const dist = 280 + prog * 980;
+
+    const x = state.heroX + Math.cos(angle) * dist;
+    const y = state.heroY + Math.sin(angle) * dist * 0.58;
+    const size = 26 + rand(seed + 3) * 42;
+
+    ctx.save();
+    ctx.globalAlpha = Math.min(0.85, (1 - prog) * 1.2);
+    ctx.fillStyle = i % 2 === 0 ? '#1b2326' : '#2d1e1c';
+    ctx.strokeStyle = '#d4af37';
+    ctx.lineWidth = 2.5;
+    ctx.shadowColor = '#000000';
+    ctx.shadowBlur = 16;
+
+    ctx.translate(x, y);
+    ctx.rotate(prog * Math.PI * 4);
+    ctx.beginPath();
+    ctx.moveTo(-size * 0.7, -size * 0.4);
+    ctx.lineTo(size * 0.8, -size * 0.5);
+    ctx.lineTo(size * 0.6, size * 0.7);
+    ctx.lineTo(-size * 0.5, size * 0.6);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    ctx.restore();
+  }
+}
+
 export function drawEffects(ctx: CanvasRenderingContext2D, state: FilmState) {
   ctx.clearRect(0, 0, W, H);
 
@@ -373,9 +451,11 @@ export function drawEffects(ctx: CanvasRenderingContext2D, state: FilmState) {
         ? ['#ffdf81', '#94cf9f', '#f7c363']
         : ['#f4cc76', '#d8964a', '#fff0b5'];
 
+  drawAnimeSpeedlines(ctx, state);
   goldenCrescentTrails(ctx, state, palette);
   expandingShockwave(ctx, state, palette);
   shards(ctx, state, palette);
+  foregroundDebris(ctx, state);
   if (state.scene >= 17) colorBurst(ctx, state);
 
   if (state.scene === 22 && state.progress > 0.5 && state.progress < 0.62) {
