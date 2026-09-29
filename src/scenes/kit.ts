@@ -41,6 +41,7 @@ export const KIT_DEFS = `
   <linearGradient id="k-cloud-dusk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe2c2"/><stop offset=".5" stop-color="#e6a891"/><stop offset="1" stop-color="#7d6a86"/></linearGradient>
   <linearGradient id="k-cloud-storm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a6574"/><stop offset=".6" stop-color="#313a47"/><stop offset="1" stop-color="#151b24"/></linearGradient>
   <linearGradient id="k-cloud-night" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fa3c2"/><stop offset=".6" stop-color="#4b5a78"/><stop offset="1" stop-color="#232b40"/></linearGradient>
+  <radialGradient id="k-peach" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#fff4d8"/><stop offset=".45" stop-color="#ffb0a0"/><stop offset="1" stop-color="#e2465a"/></radialGradient>
   <linearGradient id="k-gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff1b0"/><stop offset=".45" stop-color="#f0bf3c"/><stop offset="1" stop-color="#9a6a12"/></linearGradient>
   <linearGradient id="k-roof" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe089"/><stop offset=".5" stop-color="#e2a52e"/><stop offset="1" stop-color="#8e5a12"/></linearGradient>
   <linearGradient id="k-lacquer" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#7c1414"/><stop offset=".35" stop-color="#d23a2a"/><stop offset=".6" stop-color="#b52620"/><stop offset="1" stop-color="#5e0e10"/></linearGradient>
@@ -372,3 +373,58 @@ export function rows(n: number, cols: number, x0: number, y0: number, dx: number
   }
   return out;
 }
+
+/** 蟠桃 — immortal peach, centred on its body, radius ≈ 50·s. `bite` cuts a crescent out. */
+export function peach(x: number, y: number, s: number, cls = '', bite = false): string {
+  return `<g class="${cls}" transform="translate(${r2(x)} ${r2(y)}) scale(${r2(s)})">
+    <path d="M0 -44C30 -60 58 -30 52 6C46 40 18 54 0 54C-18 54 -46 40 -52 6C-58 -30 -30 -60 0 -44Z" fill="url(#k-peach)" stroke="${INK}" stroke-width="3"/>
+    <path d="M0 -40C-8 -10 -6 26 4 50" fill="none" stroke="#c9344a" stroke-width="3" opacity=".6"/>
+    <ellipse cx="-24" cy="-14" rx="12" ry="18" fill="#fff" opacity=".35" transform="rotate(-24 -24 -14)"/>
+    <path d="M0 -44C-4 -58 -2 -66 4 -72" fill="none" stroke="#5a3a1a" stroke-width="4" stroke-linecap="round"/>
+    <path d="M4 -64C20 -86 50 -80 58 -66C38 -58 20 -56 4 -64Z" fill="#4f9a4a" stroke="${INK}" stroke-width="2.5"/>
+    <path d="M2 -62C-16 -84 -40 -78 -46 -64C-30 -58 -14 -56 2 -62Z" fill="#3f8a44" stroke="${INK}" stroke-width="2.5"/>
+    ${bite ? `<path d="M30 -30C18 -20 16 -4 24 8C30 18 44 20 56 14L64 -40Z" fill="#fff4d8" stroke="${INK}" stroke-width="3"/><path d="M30 -30C18 -20 16 -4 24 8C30 18 44 20 56 14" fill="none" stroke="#ffd0a0" stroke-width="6" opacity=".8"/>` : ''}
+  </g>`;
+}
+
+/** Glazed wine jar (酒坛) with red paper seal, base at y. */
+export function wineJar(x: number, y: number, s: number, cls = ''): string {
+  return `<g class="${cls}" transform="translate(${r2(x)} ${r2(y)}) scale(${r2(s)})">
+    <path d="M-40 -150C-90 -130 -100 -40 -60 0H60C100 -40 90 -130 40 -150Z" fill="#6a3a22" stroke="${INK}" stroke-width="4"/>
+    <path d="M-60 -120C-80 -80 -76 -40 -54 -10" fill="none" stroke="#a8683a" stroke-width="10" opacity=".7"/>
+    <path d="M-44 -150H44V-172H-44Z" fill="#3a2016" stroke="${INK}" stroke-width="3"/>
+    <path d="M-50 -172C-40 -200 40 -200 50 -172Z" fill="#c9342a" stroke="${INK}" stroke-width="3"/>
+    <path d="M-34 -110L0 -140L34 -110L0 -80Z" fill="#d8402e" stroke="${INK}" stroke-width="3"/>
+    <text x="0" y="-98" font-size="36" text-anchor="middle" class="brush" fill="#1d1410">酒</text>
+  </g>`;
+}
+
+/** Golden goblet (爵), base at y. */
+export function cup(x: number, y: number, s: number, cls = '', rot = 0): string {
+  return `<g class="${cls}" transform="translate(${r2(x)} ${r2(y)}) rotate(${r2(rot)}) scale(${r2(s)})">
+    <path d="M-36 -80H36L22 -40H-22Z" fill="url(#k-gold)" stroke="${INK}" stroke-width="3"/>
+    <path d="M-4 -40H4V-10H-4Z" fill="#b8862e" stroke="${INK}" stroke-width="2.5"/>
+    <path d="M-24 0C-20 -12 20 -12 24 0Z" fill="url(#k-gold)" stroke="${INK}" stroke-width="3"/>
+    <ellipse cx="0" cy="-80" rx="36" ry="8" fill="#7a1e14" stroke="${INK}" stroke-width="2.5"/>
+    <path d="M-28 -72L-20 -46" stroke="#fff6c8" stroke-width="4" opacity=".7"/>
+  </g>`;
+}
+
+/** Elixir gourd (葫芦), base at y. */
+export function gourd(x: number, y: number, s: number, cls = '', rot = 0): string {
+  return `<g class="${cls}" transform="translate(${r2(x)} ${r2(y)}) rotate(${r2(rot)}) scale(${r2(s)})">
+    <path d="M0 -150C-26 -150 -30 -120 -18 -104C-54 -90 -62 -30 -40 -8C-20 8 20 8 40 -8C62 -30 54 -90 18 -104C30 -120 26 -150 0 -150Z" fill="#e0a83a" stroke="${INK}" stroke-width="4"/>
+    <path d="M-20 -104H20" stroke="#c9342a" stroke-width="8"/>
+    <path d="M-4 -150V-168H4V-150Z" fill="#6a4a2a" stroke="${INK}" stroke-width="2"/>
+    <ellipse cx="-22" cy="-56" rx="10" ry="24" fill="#fff" opacity=".35"/>
+  </g>`;
+}
+
+/** 仙女 — fairy with floating ribbons; wrapped in class `cls` + `cls-i`, base at y. */
+export const fairy = (x: number, y: number, s: number, i: number, cls = 'fairy') => `<g class="${cls} ${cls}-${i}"><g transform="translate(${x} ${y}) scale(${s})">
+  <path d="M-30 0C-34 -40 -24 -90 -12 -110H12C24 -90 34 -40 30 0Z" fill="${['#f4a6b8', '#9fd0e8', '#f7d27a'][i % 3]}" stroke="${INK}" stroke-width="2.5"/>
+  <path d="M-12 -104C-60 -120 -90 -80 -110 -40M12 -104C60 -130 90 -100 116 -60" fill="none" stroke="${['#ff7fa0', '#5fb4de', '#f0a830'][i % 3]}" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="0" cy="-124" r="14" fill="#f8dcc4" stroke="${INK}" stroke-width="2.5"/>
+  <path d="M-14 -130C-14 -150 14 -150 14 -130C10 -144 -10 -144 -14 -130Z" fill="#1d1a1c"/><circle cx="0" cy="-150" r="8" fill="#1d1a1c"/>
+  <circle cx="-9" cy="-116" r="3" fill="#ff9aa8"/><circle cx="9" cy="-116" r="3" fill="#ff9aa8"/></g></g>`;
+

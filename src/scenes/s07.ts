@@ -2,7 +2,7 @@ import { noise, outBack, rand, smooth, span, track } from '../engine/ease.ts';
 import { plane, type SceneDef } from '../engine/scene.ts';
 import { heroMarkup, type Pose } from '../rig/hero.ts';
 import { P, pose, walk } from '../rig/poses.ts';
-import { immortal, INK } from './kit.ts';
+import { fairy, immortal, INK } from './kit.ts';
 import { motes } from './fxkit.ts';
 
 /**
@@ -39,13 +39,6 @@ const bay = (z: number, dx: number, top: number, bot: number, w: number) => {
       <rect x="${VP.x - dx - w * 0.7}" y="${top - w * 0.9}" width="${dx * 2 + w * 1.4}" height="${w * 0.75}" fill="#5a78a8"/></g>`;
 };
 
-const fairy = (x: number, y: number, s: number, i: number) => `<g class="s7-fairy s7-fairy-${i}"><g transform="translate(${x} ${y}) scale(${s})">
-  <path d="M-30 0C-34 -40 -24 -90 -12 -110H12C24 -90 34 -40 30 0Z" fill="${['#f4a6b8', '#9fd0e8', '#f7d27a'][i % 3]}" stroke="${INK}" stroke-width="2.5"/>
-  <path d="M-12 -104C-60 -120 -90 -80 -110 -40M12 -104C60 -130 90 -100 116 -60" fill="none" stroke="${['#ff7fa0', '#5fb4de', '#f0a830'][i % 3]}" stroke-width="6" stroke-linecap="round"/>
-  <circle cx="0" cy="-124" r="14" fill="#f8dcc4" stroke="${INK}" stroke-width="2.5"/>
-  <path d="M-14 -130C-14 -150 14 -150 14 -130C10 -144 -10 -144 -14 -130Z" fill="#1d1a1c"/><circle cx="0" cy="-150" r="8" fill="#1d1a1c"/>
-  <circle cx="-9" cy="-116" r="3" fill="#ff9aa8"/><circle cx="9" cy="-116" r="3" fill="#ff9aa8"/></g></g>`;
-
 const banquet = () => `<g clip-path="url(#s7-doorclip)">
   <rect x="${DOOR.x - DOOR.w}" y="${DOOR.top - 20}" width="${DOOR.w * 2}" height="${DOOR.bot - DOOR.top + 40}" fill="#8a2a1c"/>
   <ellipse cx="${DOOR.x}" cy="${DOOR.top + 200}" rx="${DOOR.w * 0.7}" ry="260" fill="#ffc860" opacity=".75" filter="url(#k-blur40)"/>
@@ -57,7 +50,7 @@ const banquet = () => `<g clip-path="url(#s7-doorclip)">
   <path d="M760 640H1160L1180 670H740Z" fill="#8e2a1c" stroke="${INK}" stroke-width="3"/>
   ${Array.from({ length: 12 }, (_, i) => `<circle cx="${786 + i * 32}" cy="630" r="11" fill="${i % 3 ? '#ff9b8a' : '#f2c23a'}" stroke="${INK}" stroke-width="2"/>`).join('')}
   <path d="M740 670H1180V${DOOR.bot + 20}H740Z" fill="#c9a86a"/>
-  ${fairy(860, 760, 0.62, 0)}${fairy(960, 770, 0.66, 1)}${fairy(1060, 760, 0.62, 2)}
+  ${fairy(860, 760, 0.62, 0, 's7-fairy')}${fairy(960, 770, 0.66, 1, 's7-fairy')}${fairy(1060, 760, 0.62, 2, 's7-fairy')}
 </g>`;
 
 const heroAt = (lf: number): Pose => {

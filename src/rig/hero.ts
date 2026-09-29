@@ -259,7 +259,7 @@ function headMarkup() {
     <!-- headwear -->
     ${part('c-pilgrim', P('M-6 -122C-4 -134 12 -136 16 -124C12 -118 0 -118 -6 -122Z', '#6d8792') + '<path d="M-36 -98C-10 -110 24 -112 48 -100" fill="none" stroke="#d7c49a" stroke-width="5"/>')}
     ${part('c-king', '<path d="M-40 -96C-14 -112 26 -114 52 -98" fill="none" stroke="#f2c23a" stroke-width="7" stroke-linecap="round"/><circle cx="8" cy="-110" r="6" fill="#d8342a" stroke="#2b1810" stroke-width="2.5"/>')}
-    ${part('c-bima', P('M-36 -94C-34 -128 44 -132 50 -96C30 -90 -16 -88 -36 -94Z', '#1f2328') +
+    ${part('c-bima hat', P('M-36 -94C-34 -128 44 -132 50 -96C30 -90 -16 -88 -36 -94Z', '#1f2328') +
       P('M-34 -100C-70 -104 -96 -98 -104 -90C-90 -86 -60 -90 -34 -92Z', '#1f2328') + P('M48 -104C82 -110 106 -104 114 -96C100 -90 72 -94 48 -96Z', '#1f2328'))}
     ${part('c-sage c-furnace',
       P('M-36 -96C-30 -120 40 -126 52 -98C30 -92 -16 -90 -36 -96Z', 'url(#rig-gold)') +

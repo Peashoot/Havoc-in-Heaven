@@ -30,4 +30,5 @@ html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background:
 .hero[data-c="bima"] .c-bima,
 .hero[data-c="sage"] .c-sage,
 .hero[data-c="furnace"] .c-furnace { display: inline; }
+.hero.nohat .hat { display: none; }
 .hero[data-c="furnace"] { filter: url(#rig-scorch); }
