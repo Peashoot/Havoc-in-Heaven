@@ -69,3 +69,29 @@ test('the first staff strike uses exactly two white frames', () => {
     .filter((frame) => filmState(frame).flash === 1);
   assert.deepEqual(flashed, [1612, 1613]);
 });
+
+test('costumeStage accurately reflects the narrative journey across 22 scenes', () => {
+  assert.equal(filmState(160).costumeStage, 'pilgrim');     // Scene 2: 漂洋过海
+  assert.equal(filmState(300).costumeStage, 'pilgrim');     // Scene 3: 三星洞求道
+  assert.equal(filmState(450).costumeStage, 'monkeyKing');  // Scene 4: 花果山自由
+  assert.equal(filmState(720).costumeStage, 'bima');        // Scene 6: 弼马温
+  assert.equal(filmState(1000).costumeStage, 'bima');       // Scene 8: 蟠桃会
+  assert.equal(filmState(1280).costumeStage, 'monkeyKing'); // Scene 10: 归山
+  assert.equal(filmState(1550).costumeStage, 'greatSage');  // Scene 12: 第一棒
+  assert.equal(filmState(2300).costumeStage, 'furnaceGold');// Scene 17: 炉火
+  assert.equal(filmState(2700).costumeStage, 'greatSage');  // Scene 20: 打入凌霄殿
+});
+
+test('3d camera coordinates, target, fov, roll, and featherAngle are finite and valid in all frames', () => {
+  for (let frame = 0; frame < TOTAL_FRAMES; frame++) {
+    const s = filmState(frame);
+    assert.equal(s.cameraPosition.length, 3);
+    assert.equal(s.cameraTarget.length, 3);
+    assert.ok(s.cameraPosition.every(Number.isFinite), `frame ${frame} cameraPosition`);
+    assert.ok(s.cameraTarget.every(Number.isFinite), `frame ${frame} cameraTarget`);
+    assert.ok(Number.isFinite(s.cameraFov), `frame ${frame} cameraFov`);
+    assert.ok(Number.isFinite(s.cameraRoll), `frame ${frame} cameraRoll`);
+    assert.ok(Number.isFinite(s.featherAngle), `frame ${frame} featherAngle`);
+  }
+});
+
