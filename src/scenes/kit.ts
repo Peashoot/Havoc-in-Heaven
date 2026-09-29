@@ -248,13 +248,30 @@ export function heavenGate(x: number, y: number, w: number, opts: { cold?: boole
     `<path d="M${r2(px - w * 0.07)} ${r2(y - h * 0.5)}q${r2(w * 0.14)} ${r2(h * 0.06)} ${r2(w * 0.14)} ${r2(h * 0.14)}q${r2(-w * 0.14)} ${r2(h * 0.06)} ${r2(-w * 0.14)} ${r2(h * 0.14)}" fill="none" stroke="url(#k-gold)" stroke-width="${r2(w * 0.022)}"/>`;
   const plaque = opts.plaque === false ? '' : `<g><rect x="${r2(x - w * 0.14)}" y="${r2(y - h * 0.8)}" width="${r2(w * 0.28)}" height="${r2(h * 0.12)}" rx="4" fill="#1d3a5c" stroke="url(#k-gold)" stroke-width="${r2(w * 0.012)}"/>` +
     `<text class="brush" x="${x}" y="${r2(y - h * 0.715)}" text-anchor="middle" font-size="${r2(h * 0.08)}" fill="#f5d27a" letter-spacing="${r2(w * 0.012)}">南天门</text></g>`;
+  const shade = opts.cold ? '#9fadb8' : '#d8d0b8';
+  const courses = Array.from({ length: 9 }, (_, i) => {
+    const yy = y - h * 0.66 + (i + 1) * h * 0.066;
+    const off = (i % 2) * w * 0.04;
+    const joints = Array.from({ length: 12 }, (_, j) => `M${r2(x - w * 0.48 + off + j * w * 0.08)} ${r2(yy - h * 0.066)}v${r2(h * 0.066)}`).join('');
+    return `M${r2(x - w * 0.48)} ${r2(yy)}h${r2(w * 0.96)}${joints}`;
+  }).join('');
+  const arch = `M${r2(x - w * 0.22)} ${y}V${r2(y - h * 0.36)}Q${x} ${r2(y - h * 0.6)} ${r2(x + w * 0.22)} ${r2(y - h * 0.36)}V${y}Z`;
+  const studs = (dx: number) => Array.from({ length: 20 }, (_, i) => `<circle cx="${r2(x + dx + ((i % 4) - 1.5) * w * 0.04)}" cy="${r2(y - h * 0.08 - Math.floor(i / 4) * h * 0.06)}" r="${r2(w * 0.007)}" fill="#f2c23a"/>`).join('');
+  const crenel = Array.from({ length: 12 }, (_, i) => `<rect x="${r2(x - w * 0.5 + i * w * 0.0875)}" y="${r2(y - h * 0.7)}" width="${r2(w * 0.05)}" height="${r2(h * 0.04)}" fill="${stone}" stroke="${trim}" stroke-width="2"/>`).join('');
   return `<g>
     <path d="M${r2(x - w * 0.62)} ${y}h${r2(w * 1.24)}l${r2(w * 0.06)} ${r2(h * 0.05)}h${r2(-w * 1.36)}Z" fill="${stone}" stroke="${trim}" stroke-width="3"/>
     <rect x="${r2(x - w * 0.48)}" y="${r2(y - h * 0.66)}" width="${r2(w * 0.96)}" height="${r2(h * 0.66)}" fill="${stone}" stroke="${trim}" stroke-width="3"/>
-    <path d="M${r2(x - w * 0.24)} ${y}V${r2(y - h * 0.36)}Q${x} ${r2(y - h * 0.58)} ${r2(x + w * 0.24)} ${r2(y - h * 0.36)}V${y}Z" fill="#fff7d8"/>
-    <path d="M${r2(x - w * 0.24)} ${y}V${r2(y - h * 0.36)}Q${x} ${r2(y - h * 0.58)} ${r2(x + w * 0.24)} ${r2(y - h * 0.36)}V${y}" fill="none" stroke="${trim}" stroke-width="4"/>
+    <rect x="${r2(x + w * 0.2)}" y="${r2(y - h * 0.66)}" width="${r2(w * 0.28)}" height="${r2(h * 0.66)}" fill="${shade}" opacity=".6"/>
+    <path d="${courses}" stroke="${shade}" stroke-width="2" opacity=".9"/>
+    ${crenel}
+    <path d="${arch}" fill="#fff4c8"/>
+    <path d="${arch}" fill="url(#k-glow-warm)" opacity=".9"/>
+    <path d="M${r2(x - w * 0.22)} ${y}V${r2(y - h * 0.36)}Q${r2(x - w * 0.12)} ${r2(y - h * 0.5)} ${r2(x - w * 0.06)} ${r2(y - h * 0.52)}V${y}Z" fill="#9a1f1a" stroke="${INK}" stroke-width="3"/>
+    <path d="M${r2(x + w * 0.22)} ${y}V${r2(y - h * 0.36)}Q${r2(x + w * 0.12)} ${r2(y - h * 0.5)} ${r2(x + w * 0.06)} ${r2(y - h * 0.52)}V${y}Z" fill="#861914" stroke="${INK}" stroke-width="3"/>
+    ${studs(-w * 0.14)}${studs(w * 0.14)}
+    <path d="M${r2(x - w * 0.22)} ${y}V${r2(y - h * 0.36)}Q${x} ${r2(y - h * 0.6)} ${r2(x + w * 0.22)} ${r2(y - h * 0.36)}V${y}" fill="none" stroke="url(#k-gold)" stroke-width="${r2(w * 0.012)}"/>
     ${pillar(x - w * 0.36)}${pillar(x + w * 0.36)}
-    ${hall(x, y - h * 0.66, w * 0.9, { wall: '#a0231d' })}
+    ${hall(x, y - h * 0.7, w * 0.9, { wall: '#a0231d' })}
     ${plaque}
   </g>`;
 }
