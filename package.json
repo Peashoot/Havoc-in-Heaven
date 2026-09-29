@@ -1,0 +1,20 @@
+{
+  "name": "havoc-in-heaven-film",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "tsc --noEmit && vite build",
+    "test": "node --experimental-strip-types --test src/timeline.test.ts",
+    "export:frames": "node scripts/export-frames.mjs",
+    "render:mp4": "node scripts/render-mp4.mjs",
+    "export:mp4": "ffmpeg -y -framerate 30 -start_number 0 -i frames/frame-%05d.png -frames:v 3150 -c:v libx264 -preset slow -crf 18 -pix_fmt yuv420p -movflags +faststart havoc-in-heaven.mp4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.18.6",
+    "playwright": "^1.63.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.0"
+  }
+}
