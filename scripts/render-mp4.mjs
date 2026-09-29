@@ -41,6 +41,19 @@ async function waitForServer(url, server) {
   throw new Error('预览服务启动超时');
 }
 
+async function launchBrowser() {
+  const args = ['--disable-gpu', '--disable-gpu-compositing'];
+  try {
+    return await chromium.launch({ channel: 'chrome', headless: true, args });
+  } catch {
+    try {
+      return await chromium.launch({ headless: true, args });
+    } catch (error) {
+      throw new Error(`无法启动 Chrome 或 Playwright Chromium。请运行 npx playwright install chromium。\n${error.message}`);
+    }
+  }
+}
+
 async function main() {
   const { start, end, output } = options(process.argv.slice(2));
   const port = await availablePort();
@@ -51,8 +64,7 @@ async function main() {
   let encoder;
   try {
     await waitForServer(`http://127.0.0.1:${port}/`, server);
-    browser = await chromium.launch({ channel: 'chrome', headless: true,
-      args: ['--disable-gpu', '--disable-gpu-compositing'] });
+    browser = await launchBrowser();
     const page = await browser.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1 });
     await page.goto(`http://127.0.0.1:${port}/?frame=${start}`, { waitUntil: 'networkidle' });
     await page.evaluate(() => document.fonts.ready);
