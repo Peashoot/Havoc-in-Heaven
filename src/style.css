@@ -7,15 +7,16 @@ html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; }
 #world { transform-origin: 960px 620px; }
 #world svg, #actors svg, #final-title svg { width: 100%; height: 100%; display: block; }
 #backdrop { z-index: 0; }
-#world { z-index: 1; }
-#atmosphere { z-index: 2; pointer-events: none; }
-#darkness { z-index: 3; pointer-events: none; background: #070b12; opacity: 0; }
-#actors { z-index: 4; pointer-events: none; }
-#effects { z-index: 5; pointer-events: none; }
-#final-title { z-index: 6; pointer-events: none; opacity: 0; transform-origin: 960px 390px; filter: drop-shadow(0 8px 17px rgba(0, 0, 0, .9)); }
+#webgl-stage { z-index: 1; pointer-events: none; }
+#world { z-index: 2; }
+#atmosphere { z-index: 3; pointer-events: none; }
+#darkness { z-index: 4; pointer-events: none; background: #070b12; opacity: 0; }
+#actors { z-index: 5; pointer-events: none; }
+#effects { z-index: 6; pointer-events: none; }
+#final-title { z-index: 7; pointer-events: none; opacity: 0; transform-origin: 960px 390px; filter: drop-shadow(0 8px 17px rgba(0, 0, 0, .9)); }
 .title-brush { font-family: 'STKaiti', 'KaiTi', 'BiauKai', serif; font-size: 216px; font-weight: 900; letter-spacing: 24px; }
-#flash { z-index: 7; pointer-events: none; background: #fff1c8; opacity: 0; mix-blend-mode: screen; }
-#vignette { z-index: 8; pointer-events: none; background: radial-gradient(ellipse 73% 72% at 52% 52%, transparent 29%, rgba(5, 6, 11, .12) 65%, rgba(2, 3, 7, .75) 100%); }
-#letterbox-top, #letterbox-bottom { position: absolute; left: 0; width: 100%; height: 58px; z-index: 9; background: #06070a; }
+#flash { z-index: 8; pointer-events: none; background: #fff1c8; opacity: 0; mix-blend-mode: screen; }
+#vignette { z-index: 9; pointer-events: none; background: radial-gradient(ellipse 73% 72% at 52% 52%, transparent 29%, rgba(5, 6, 11, .12) 65%, rgba(2, 3, 7, .75) 100%); }
+#letterbox-top, #letterbox-bottom { position: absolute; left: 0; width: 100%; height: 58px; z-index: 10; background: #06070a; }
 #letterbox-top { top: 0; }
 #letterbox-bottom { bottom: 0; }
