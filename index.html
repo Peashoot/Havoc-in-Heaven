@@ -3,29 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0a0d12" />
-    <title>大闹天宫 · 云海天宫</title>
+    <meta name="theme-color" content="#06070a" />
+    <title>大闹天宫</title>
     <link rel="stylesheet" href="/src/style.css" />
   </head>
   <body>
     <div id="viewport">
-      <main id="stage" aria-label="大闹天宫动画短片，第一幕云海天宫">
-        <canvas id="backdrop" width="1920" height="1080"></canvas>
-        <canvas id="webgl-stage" width="1920" height="1080"></canvas>
-        <div id="world"></div>
-        <canvas id="atmosphere" width="1920" height="1080"></canvas>
-        <div id="darkness"></div>
-        <div id="actors"></div>
-        <canvas id="effects" width="1920" height="1080"></canvas>
-        <div id="final-title" aria-hidden="true">
-          <svg viewBox="0 0 1920 1080">
-            <defs><linearGradient id="title-gold" x2="0" y2="1"><stop stop-color="#fff0b7"/><stop offset=".45" stop-color="#d7a55a"/><stop offset="1" stop-color="#75502d"/></linearGradient></defs>
-            <text x="960" y="408" text-anchor="middle" fill="url(#title-gold)" stroke="#4a291a" stroke-width="3" paint-order="stroke" class="title-brush">大闹天宫</text>
-            <path d="M495 459h930" stroke="#c18c4b" stroke-width="2" opacity=".7"/>
-            <path d="M637 471h646" stroke="#9a2f24" stroke-width="6" opacity=".85"/>
-          </svg>
-        </div>
-        <div id="flash"></div>
+      <main id="stage" aria-label="大闹天宫动画短片">
+        <svg id="defs" aria-hidden="true"><defs></defs></svg>
+        <div class="slot" id="slot0"></div>
+        <div class="slot" id="slot1"></div>
+        <canvas id="fx" width="1920" height="1080"></canvas>
+        <canvas id="tx" width="1920" height="1080"></canvas>
         <div id="vignette"></div>
         <div id="letterbox-top"></div>
         <div id="letterbox-bottom"></div>
