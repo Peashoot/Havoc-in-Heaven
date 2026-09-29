@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "tsc --noEmit && vite build",
-    "test": "node --experimental-strip-types --test src/timeline.test.ts",
+    "test": "node --experimental-strip-types --test 'src/**/*.test.ts'",
     "export:frames": "node scripts/export-frames.mjs",
     "render:mp4": "node scripts/render-mp4.mjs",
     "export:mp4": "ffmpeg -y -framerate 30 -start_number 0 -i frames/frame-%05d.png -frames:v 3150 -c:v libx264 -preset slow -crf 18 -pix_fmt yuv420p -movflags +faststart havoc-in-heaven.mp4"
