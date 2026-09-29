@@ -28,13 +28,13 @@ const heroAt = (lf: number): Pose => {
 
 // crack network: branching polylines from a centre, grown by length over time
 type Crack = { pts: [number, number][] };
-const cracks = (cx: number, cy: number, n: number, len: number, seed: number): Crack[] => Array.from({ length: n }, (_, i) => {
+export const cracks = (cx: number, cy: number, n: number, len: number, seed: number): Crack[] => Array.from({ length: n }, (_, i) => {
   let a = (i / n) * Math.PI * 2 + rand(seed + i) * 0.4, x = cx, y = cy;
   const pts: [number, number][] = [[x, y]];
   for (let k = 0; k < 12; k++) { a += (rand(seed + i * 20 + k) - 0.5) * 0.9; const step = len / 12 * (0.6 + rand(seed + i * 30 + k) * 0.8); x += Math.cos(a) * step; y += Math.sin(a) * step; pts.push([x, y]); }
   return { pts };
 });
-const drawCracks = (ctx: CanvasRenderingContext2D, list: Crack[], grow: number, width: number, glow: string) => {
+export const drawCracks = (ctx: CanvasRenderingContext2D, list: Crack[], grow: number, width: number, glow: string) => {
   if (grow <= 0) return;
   ctx.save();
   ctx.lineCap = 'round'; ctx.lineJoin = 'round';
