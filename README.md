@@ -4,6 +4,8 @@
 
 ## 本地预览
 
+当前版本增加了简短叙事字幕，交代两次招安、蟠桃会未邀、金刚琢擒拿与八卦炉炼化的因果。弼马温段加入愤而离天的动作，南天门段加入金刚琢击中、金箍棒脱手的连续动作。字幕按帧号绘制，浏览器和导出视频保持一致。
+
 ```bash
 npm install
 npm run dev
@@ -47,11 +49,12 @@ npm run export:mp4
 
 输出为 `havoc-in-heaven.mp4`，H.264 / yuv420p / 30 fps / 1920 × 1080。这个命令要求 `frames/` 中已有全部连续的 3150 帧。当前导出为无声画面；剧本中的声音设计尚需另行配乐和混音。
 
-如果只需要 MP4，先运行 `npm run build`，再运行 `npm run render:mp4`。这个脚本逐帧将画面送入 FFmpeg，省去保存完整 PNG 序列；同样需要系统安装 FFmpeg。
+如果只需要 MP4，先运行 `npm run build`，再运行 `npm run render:mp4`。这个脚本逐帧将画面送入 FFmpeg，省去保存完整 PNG 序列；同样需要系统安装 FFmpeg。可用 `--output` 指定视频文件、用 `--dist` 指定构建目录，或用 `--width 1280` 导出 720p 预览（默认仍为 1920 × 1080），例如 `node scripts/render-mp4.mjs --dist /tmp/movie-story-review --output havoc-in-heaven-revised.mp4`。
 
 ## 项目结构
 
 - `src/timeline.ts`：22 幕的帧区间、转场类型与长度，以及每帧由哪一两幕合成。
+- `src/captions.ts`：字幕内容、全局帧区间和淡入淡出；独立于摄像机与转场绘制。
 - `src/engine/`：缓动与关键帧、多层景深摄像机（前景/中景/远景视差）、双场景槽转场渲染器。
 - `src/rig/`：可动关节的悟空角色（五套服装、姿势库、IK、披风飘带的惯性跟随）。
 - `src/scenes/`：每幕一个文件 `s01.ts`–`s22.ts`，公共美术在 `kit.ts`，Canvas 特效在 `fxkit.ts`。

@@ -34,8 +34,8 @@ const decree = () => `<g class="s5-decree">
   <g clip-path="url(#s5-clip)">
     <rect x="${-W / 2}" y="-130" width="${W}" height="260" fill="url(#s5-silk)" stroke="${INK}" stroke-width="3"/>
     <rect x="${-W / 2 + 20}" y="-112" width="${W - 40}" height="224" fill="none" stroke="#b3261e" stroke-width="5"/>
-    <path d="${Array.from({ length: 16 }, (_, i) => `M${W / 2 - 70 - i * 40} -90v${120 + (i % 3) * 30}`).join('')}" stroke="#4a2a14" stroke-width="7" stroke-dasharray="14 8" stroke-linecap="round"/>
-    <text class="brush" x="${W / 2 - 60}" y="-50" font-size="46" fill="#8a1a10" writing-mode="tb" letter-spacing="6">奉天承运</text>
+    <path d="${Array.from({ length: 14 }, (_, i) => `M${W / 2 - 150 - i * 40} -90v${120 + ((i + 2) % 3) * 30}`).join('')}" stroke="#4a2a14" stroke-width="7" stroke-dasharray="14 8" stroke-linecap="round"/>
+    <text class="brush" x="${W / 2 - 60}" y="0" text-anchor="middle" font-size="40" fill="#8a1a10" writing-mode="vertical-rl" letter-spacing="6">奉天承运</text>
     <rect x="${-W / 2 + 60}" y="30" width="70" height="70" fill="none" stroke="#c0281e" stroke-width="6"/>
     <rect x="${-W / 2 + 72}" y="42" width="46" height="46" fill="#c0281e"/>
   </g>

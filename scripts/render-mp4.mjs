@@ -9,17 +9,18 @@ const TOTAL_FRAMES = 3150;
 const FPS = 30;
 
 function options(args) {
-  const result = { start: 0, end: TOTAL_FRAMES - 1, output: 'havoc-in-heaven.mp4' };
+  const result = { start: 0, end: TOTAL_FRAMES - 1, output: 'havoc-in-heaven.mp4', dist: 'dist', width: 1920 };
   for (let i = 0; i < args.length; i++) {
     const key = args[i];
-    if (!['--start', '--end', '--output'].includes(key)) throw new Error(`未知参数：${key}`);
+    if (!['--start', '--end', '--output', '--dist', '--width'].includes(key)) throw new Error(`未知参数：${key}`);
     const value = args[++i];
     if (value === undefined) throw new Error(`${key} 缺少值`);
-    if (key === '--output') result.output = value;
+    if (key === '--output' || key === '--dist') result[key.slice(2)] = value;
     else if (/^\d+$/.test(value)) result[key.slice(2)] = Number(value);
     else throw new Error(`${key} 需要非负整数`);
   }
   if (result.start > result.end || result.end >= TOTAL_FRAMES) throw new Error('帧范围无效');
+  if (result.width < 640 || result.width > 1920 || result.width % 32 !== 0) throw new Error('宽度须为 640–1920 之间的 32 的倍数');
   return result;
 }
 
@@ -55,19 +56,25 @@ async function launchBrowser() {
 }
 
 async function main() {
-  const { start, end, output } = options(process.argv.slice(2));
+  const { start, end, output, dist, width } = options(process.argv.slice(2));
+  const height = width * 9 / 16;
   const port = await availablePort();
   const server = spawn(process.execPath, [resolve('node_modules/vite/bin/vite.js'), 'preview',
-    '--host', '127.0.0.1', '--port', String(port), '--strictPort'],
+    '--host', '127.0.0.1', '--port', String(port), '--strictPort', '--outDir', resolve(dist)],
   { stdio: ['ignore', 'pipe', 'pipe'] });
   let browser;
   let encoder;
   try {
     await waitForServer(`http://127.0.0.1:${port}/`, server);
     browser = await launchBrowser();
-    const page = await browser.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1 });
+    const page = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: 1 });
+    const capture = await page.context().newCDPSession(page);
     await page.goto(`http://127.0.0.1:${port}/?frame=${start}`, { waitUntil: 'networkidle' });
-    await page.evaluate(() => document.fonts.ready);
+    await page.evaluate(async () => {
+      // Frame zero contains no Chinese text: load the font before the first caption.
+      await document.fonts.load('900 38px FilmSerif', '大闹天宫');
+      await document.fonts.ready;
+    });
     let encoderError = '';
     encoder = spawn('ffmpeg', ['-y', '-f', 'image2pipe', '-framerate', String(FPS), '-c:v', 'mjpeg',
       '-i', 'pipe:0', '-frames:v', String(end - start + 1), '-c:v', 'libx264', '-preset', 'medium',
@@ -76,14 +83,19 @@ async function main() {
     encoder.stderr.on('data', (chunk) => { encoderError = (encoderError + chunk.toString()).slice(-5000); });
 
     for (let frame = start; frame <= end; frame++) {
-      await page.evaluate(async (frameNumber) => {
+      await page.evaluate((frameNumber) => {
         window.renderFrame(frameNumber);
-        await new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done)));
         if (document.querySelector('#stage')?.dataset.frame !== String(frameNumber)) {
           throw new Error(`渲染帧不匹配：${frameNumber}`);
         }
       }, frame);
-      const jpeg = await page.locator('#stage').screenshot({ type: 'jpeg', quality: 90, timeout: 30000 });
+      // The stage fills this fixed viewport. Capture the painted frame directly;
+      // captureScreenshot flushes layout and painting after the synchronous frame render.
+      const shot = await capture.send('Page.captureScreenshot', {
+        format: 'jpeg', quality: 90, captureBeyondViewport: false,
+        clip: { x: 0, y: 0, width, height, scale: 1 },
+      });
+      const jpeg = Buffer.from(shot.data, 'base64');
       if (!encoder.stdin.write(jpeg)) await once(encoder.stdin, 'drain');
       if (frame === start || frame === end || (frame + 1) % 150 === 0) {
         console.log(`编码画面 ${frame - start + 1}/${end - start + 1}：第 ${frame} 帧`);
@@ -94,7 +106,7 @@ async function main() {
     if (code !== 0) throw new Error(`FFmpeg 退出码 ${code}\n${encoderError}`);
     console.log(`MP4 已写入 ${resolve(output)}`);
   } finally {
-    if (encoder?.exitCode === null) encoder.kill();
+    if (encoder?.exitCode === null) { encoder.stdin.destroy(); encoder.kill(); }
     await browser?.close();
     server.kill();
   }

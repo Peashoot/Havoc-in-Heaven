@@ -27,7 +27,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Rendering (`src/engine/`)
 - `scene.ts`: `SceneDef { id, bg, markup(), camera(t), heroes?(t), update?(d, t), fx?(ctx, t, view), shake?(t) }`. `plane(z, body)` makes a multiplane layer: z=0 is fixed sky, z=1 is the subject plane, z>1 is foreground; `planeMatrix(cam, z)` gives parallax + per-depth zoom (`zoom^z`).
-- `render.ts`: two scene slots (`#slot0`/`#slot1`, scene % 2) so transitions can overlap two live scenes; per-slot fx canvases composited to `#fx`; transition overlays (cloud wall, ink, flash, black, push, whip blur) on `#tx`.
+- `render.ts`: two scene slots (`#slot0`/`#slot1`, scene % 2) so transitions can overlap two live scenes; each slot contains its SVG and FX canvas, so both fade/blur/shake together and the incoming scene occludes outgoing effects. Transition overlays (cloud wall, ink, flash, black) use `#tx`; whip pans move the camera without exposing empty stage edges.
+- `src/captions.ts`: global-frame narration cues with deterministic fades, rendered by `main.ts` above the scene and transitions. Keep captions short enough to read; regenerate the font subset after changing text.
 - Scene rules: every class/id in a scene is prefixed `sN-`; wrap kit elements that already have a `transform` in a `<g>` before animating them.
 
 ### Characters and kit
@@ -38,4 +39,4 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Visual rules
 - Colour follows Wukong's freedom: saturated Huaguo → grey-gold bureaucracy → blue-grey punishment → furnace fire → rainbow release.
-- Costume arc: pilgrim (s2–3) → king (s4, s10) → bima (s5–9) → sage armour (s11–13, s19–22) → furnace (s14–18).
+- Costume arc: pilgrim (s2–3) → king (s4, s10) → bima (s5–6) → sage armour (s7–9, s11–13, s19–22) → furnace (s14–18). The second invitation follows his self-proclamation as 齐天大圣.

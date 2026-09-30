@@ -6,7 +6,7 @@ import { cup, fairy, gourd, immortal, INK, peach, rays, wineJar } from './kit.ts
 import { motes, shockRing, sparks, speedLines, staffSmear, whiteFrame } from './fxkit.ts';
 
 /**
- * 09 闹蟠桃会 — Wukong vaults onto the banquet table, rips off the stable-keeper's hat and
+ * 09 闹蟠桃会 — Wukong vaults onto the banquet table, rips off the ceremonial crown and
  * flings it away, runs the length of the table kicking the golden cups, summons the staff
  * and sweeps the feast into the air: peaches, dishes, a wine jar pouring an arc of wine;
  * immortals and fairies scatter. The elixir gourd tumbles up and bursts — the camera rides
@@ -101,8 +101,8 @@ const table = () => `
   ${Array.from({ length: 30 }, (_, i) => `<path d="M${-780 + i * 120} ${TOP + 26}l40 60l40 -60" fill="#f2c23a" stroke="${INK}" stroke-width="2.5"/>`).join('')}
   <path d="M-800 ${TOP + 150}H2700V1400H-800Z" fill="#2a0c08"/>`;
 
-const hatPath = `<path d="M-36 -94C-34 -128 44 -132 50 -96C30 -90 -16 -88 -36 -94Z" fill="#1f2328" stroke="${INK}" stroke-width="3"/>
-  <path d="M-34 -100C-70 -104 -96 -98 -104 -90C-90 -86 -60 -90 -34 -92Z" fill="#1f2328"/><path d="M48 -104C82 -110 106 -104 114 -96C100 -90 72 -94 48 -96Z" fill="#1f2328"/>`;
+const hatPath = `<path d="M-40 -96L-30 -134L-8 -116L14 -142L36 -116L54 -134L60 -96Z" fill="#efbc36" stroke="${INK}" stroke-width="3"/>
+  <path d="M-38 -100H58" stroke="#b0281c" stroke-width="8"/><circle cx="14" cy="-122" r="7" fill="#d63825"/>`;
 
 const scene: SceneDef = {
   id: 9,
@@ -116,7 +116,7 @@ const scene: SceneDef = {
       ${PROPS.map((p, i) => `<g class="s9-p s9-p-${i}">${p.kind === 'cup' ? cup(0, 0, p.s) : p.kind === 'peach' ? peach(0, -40 * p.s, p.s) : `<ellipse cx="0" cy="-6" rx="${70 * p.s}" ry="${16 * p.s}" fill="#e8c860" stroke="${INK}" stroke-width="3"/>${peach(-24 * p.s, -40 * p.s, 0.6 * p.s)}${peach(28 * p.s, -40 * p.s, 0.6 * p.s)}`}</g>`).join('')}
       <g class="s9-jar">${wineJar(0, 0, 1)}</g>
       <g class="s9-gourd">${gourd(0, 70, 0.9)}</g>
-      ${heroMarkup('wukong', 'bima')}
+      ${heroMarkup('wukong', 'sage')}
       <g class="s9-hat"><g transform="scale(${S})">${hatPath}</g></g>
       <g class="s9-pill" opacity="0">
         <circle r="170" fill="url(#k-glow-warm)" opacity=".9"/>
@@ -142,7 +142,7 @@ const scene: SceneDef = {
     return { x: x + noise(lf * 0.05, 5) * 8, y: y + noise(lf * 0.05, 9) * 5, zoom, rot: lf > SWEEP ? shake(lf, SWEEP, 1.2, 10)[0] : 0 };
   },
   shake: (t) => shake(t.lf, SWEEP, 26, 10),
-  heroes: (t) => [{ name: 'wukong', costume: 'bima', pose: { ...heroAt(t.lf), staffGlow: smooth(span(t.lf, 52, 60)) * 0.7 } }],
+  heroes: (t) => [{ name: 'wukong', costume: 'sage', pose: { ...heroAt(t.lf), staffGlow: smooth(span(t.lf, 52, 60)) * 0.7 } }],
   update: (d, t) => {
     const lf = t.lf;
     d.all('.hero').forEach((h) => h.classList.toggle('nohat', lf >= 24));

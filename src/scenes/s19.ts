@@ -5,7 +5,7 @@ import { at, P, pose, poseTrack } from '../rig/poses.ts';
 import { INK } from './kit.ts';
 import { shockRing, sparks, whiteFrame } from './fxkit.ts';
 import { DOOR, FURNACE, furnace } from './s16.ts';
-import { cracks, drawCracks } from './s18.ts';
+import { drawCracks, FURNACE_CRACKS } from './s18.ts';
 
 /**
  * 19 破炉 — a held breath in the dark hall: the furnace ticks and glows along its cracks.
@@ -50,7 +50,7 @@ const shardAt = (i: number, lf: number) => {
 };
 
 const STAFF0 = { x: 1500, y: 990 };
-const BODY_CRACKS = [...cracks(DOOR.x + 40, DOOR.y - 150, 6, 380, 17), ...cracks(DOOR.x - 60, DOOR.y + 90, 5, 300, 29)];
+const BODY_CRACKS = FURNACE_CRACKS;
 
 const scene: SceneDef = {
   id: 19,
@@ -75,10 +75,10 @@ const scene: SceneDef = {
   ].join(''),
   camera: (t) => {
     const lf = t.lf;
-    const zoom = track([[-12, 1.3], [BOOM - 2, 1.42, 'inOut'], [BOOM + 6, 0.92, 'outExpo'], [CATCH, 1.0, 'inOut'], [CATCH + 8, 1.12, 'outExpo'], [130, 1.2, 'inOut']], lf);
-    const y = track([[-12, 600], [BOOM - 2, 620], [BOOM + 6, 520, 'outExpo'], [BOOM + 20, 400, 'inOut'], [CATCH, 380, 'inOut'], [130, 400]], lf);
-    const x = track([[-12, 960], [CATCH, 1040, 'inOut'], [130, 980, 'inOut']], lf);
-    return { x: x + noise(lf * 0.05, 1) * 6, y: y + noise(lf * 0.05, 2) * 5, zoom, rot: lf > BOOM ? shake(lf, BOOM, 2, 16)[0] : 0 };
+    const zoom = track([[-16, 1.02], [14, 1.02], [BOOM - 2, 1.16, 'inOut'], [BOOM + 6, 0.92, 'outExpo'], [CATCH, 1.0, 'inOut'], [CATCH + 8, 1.12, 'outExpo'], [130, 1.2, 'inOut']], lf);
+    const y = track([[-16, 700], [14, 700], [BOOM - 2, 620], [BOOM + 6, 520, 'outExpo'], [BOOM + 20, 400, 'inOut'], [CATCH, 380, 'inOut'], [130, 400]], lf);
+    const x = track([[-16, 980], [14, 980], [CATCH, 1040, 'inOut'], [130, 980, 'inOut']], lf);
+    return { x: x + noise((lf + 120) * 0.06, 1) * 6, y: y + noise((lf + 120) * 0.06, 3) * 5, zoom, rot: lf > BOOM ? shake(lf, BOOM, 2, 16)[0] : 0 };
   },
   shake: (t) => {
     const pre = t.lf < BOOM ? [noise(t.lf * 1.5, 1) * span(t.lf, 10, BOOM) * 6, noise(t.lf * 1.5, 2) * span(t.lf, 10, BOOM) * 6] : [0, 0];
@@ -100,10 +100,12 @@ const scene: SceneDef = {
       d.op(`.s19-sh-${i}`, lf < BOOM ? 0 : 1 - smooth(span(lf, BOOM + (SHARDS[i].grow ? 8 : 30), BOOM + (SHARDS[i].grow ? 22 : 60))));
     });
     // staff: lies glowing, lifts and spins into the reaching hand
-    const hand = solve(heroAt(CATCH)).hands.F;
+    const catchPose = heroAt(CATCH);
+    const hand = solve(catchPose).hands.F;
     const k = outCubic(span(lf, BOOM + 22, CATCH));
     const sx = STAFF0.x + (hand[0] - STAFF0.x) * k, sy = STAFF0.y + (hand[1] - STAFF0.y) * k - Math.sin(k * Math.PI) * 160;
-    d.tf('.s19-staff', `translate(${sx.toFixed(1)} ${sy.toFixed(1)}) rotate(${(-4 + k * 900 + (lf < BOOM + 22 ? noise(lf, 3) * 4 * span(lf, 0, BOOM) : 0)).toFixed(1)})`);
+    const angle = -4 + k * (720 + catchPose.staffA + 4) + (lf < BOOM + 22 ? noise(lf, 3) * 4 * span(lf, 0, BOOM) : 0);
+    d.tf('.s19-staff', `translate(${sx.toFixed(1)} ${sy.toFixed(1)}) rotate(${angle.toFixed(1)}) scale(${(1 + (catchPose.s - 1) * k).toFixed(3)})`);
     d.op('.s19-staff', lf < CATCH ? 1 : 0);
   },
   fx: (ctx, t, view) => {
@@ -133,7 +135,7 @@ const scene: SceneDef = {
     if (since === 0 || since === 1) whiteFrame(ctx, 1);
     else if (since > 1) whiteFrame(ctx, clamp(1 - (since - 2) / 10) * 0.6, '#fff3cf');
     // pre-blast: cracks racing over the bronze, light leaking through, silence
-    if (lf < BOOM) { view.apply(ctx, 1); drawCracks(ctx, BODY_CRACKS, 0.35 + smooth(span(lf, -12, BOOM)) * 0.65, 4 + span(lf, 0, BOOM) * 3, '#ffa030'); }
+    if (lf < BOOM) { view.apply(ctx, 1); drawCracks(ctx, BODY_CRACKS, 1, 5 + span(lf, 14, BOOM) * 2, '#ffa030'); }
     if (lf < BOOM) whiteFrame(ctx, smooth(span(lf, 0, BOOM - 4)) * 0.3, '#000000');
     const hand = solve(heroAt(CATCH)).hands.F;
     sparks(ctx, view, hand[0], hand[1], lf - CATCH, 50, 22, 17);

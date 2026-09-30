@@ -70,6 +70,8 @@ const scene: SceneDef = {
       <rect x="-3000" y="-3000" width="8000" height="8000" fill="#26324a"/>
       <rect x="${DOOR.x - DOOR.w / 2 - 60}" y="${DOOR.top - 70}" width="${DOOR.w + 120}" height="${DOOR.bot - DOOR.top + 70}" fill="#4a1e1e" stroke="${INK}" stroke-width="4"/>
       <rect x="${DOOR.x - DOOR.w / 2 - 60}" y="${DOOR.top - 70}" width="${DOOR.w + 120}" height="40" fill="#b89048"/>
+      <rect x="800" y="230" width="320" height="50" rx="4" fill="#342025" stroke="#b89048" stroke-width="3"/>
+      <text class="brush" x="960" y="267" text-anchor="middle" font-size="34" letter-spacing="10" fill="#f2d68e">蟠桃胜会</text>
       ${banquet()}
       <g class="s7-doorL"><rect x="${DOOR.x - DOOR.w / 2}" y="${DOOR.top}" width="${DOOR.w / 2}" height="${DOOR.bot - DOOR.top}" fill="#9a2420" stroke="${INK}" stroke-width="4"/>
         ${Array.from({ length: 25 }, (_, i) => `<circle cx="${DOOR.x - DOOR.w / 2 + 30 + (i % 5) * 34}" cy="${DOOR.top + 50 + Math.floor(i / 5) * 90}" r="7" fill="#f2c23a"/>`).join('')}
@@ -84,15 +86,15 @@ const scene: SceneDef = {
       <path class="s7-spill" d="M${DOOR.x - 10} ${DOOR.bot}H${DOOR.x + 10}L${DOOR.x + 260} 1400H${DOOR.x - 260}Z" fill="#ffd98a" opacity=".25" filter="url(#k-blur16)"/>
       <path d="${Array.from({ length: 13 }, (_, i) => `M${DOOR.x - 600 + i * 100} ${DOOR.bot}L${VP.x + (DOOR.x - 600 + i * 100 - VP.x) * 4} 1400`).join('')}" stroke="#4d6080" stroke-width="3" opacity=".6"/>`),
     ...ROWS.slice(0, 4).map(([z, dx, top, bot, w]) => plane(z, bay(z, dx, top, bot, w))),
-    plane(1, heroMarkup('wukong', 'bima')),
+    plane(1, heroMarkup('wukong', 'sage')),
     ...ROWS.slice(4).map(([z, dx, top, bot, w]) => plane(z, bay(z, dx, top, bot, w))),
   ].join(''),
   camera: (t) => {
     const lf = t.lf;
-    const zoom = track([[-14, 0.92], [96, 1.18, 'inOut'], [118, 1.3], [150, 1.75, 'inOut'], [165, 1.8]], lf);
-    return { x: VP.x + noise(lf * 0.03, 2) * 14 + track([[-14, -40], [120, 20]], lf), y: track([[-14, 600], [120, 560], [150, 560]], lf) + noise(lf * 0.03, 4) * 6, zoom };
+    const zoom = track([[-18, 0.92], [96, 1.18, 'inOut'], [118, 1.3], [165, 3.1, 'inOut']], lf);
+    return { x: VP.x + noise(lf * 0.03, 2) * 6 + track([[-18, -40], [118, 0], [165, -60]], lf), y: track([[-18, 600], [118, 560], [165, 643]], lf) + noise(lf * 0.03, 4) * 4, zoom };
   },
-  heroes: (t) => [{ name: 'wukong', costume: 'bima', pose: heroAt(t.lf) }],
+  heroes: (t) => [{ name: 'wukong', costume: 'sage', pose: heroAt(t.lf) }],
   update: (d, t) => {
     const lf = t.lf;
     const open = outBack(span(lf, 64, 100));

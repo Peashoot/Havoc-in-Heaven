@@ -1,6 +1,7 @@
 import { noise, rand, smooth, span, track } from '../engine/ease.ts';
 import { plane, type SceneDef } from '../engine/scene.ts';
-import { heroMarkup, type Pose } from '../rig/hero.ts';
+import { headPoint, heroMarkup, solve, type Pose } from '../rig/hero.ts';
+import { apply, mul, R, T } from '../rig/mat.ts';
 import { P } from '../rig/poses.ts';
 import { cloud, heavenGate, rays, soldier } from './kit.ts';
 import { motes, sparks, streaks } from './fxkit.ts';
@@ -12,8 +13,12 @@ import { motes, sparks, streaks } from './fxkit.ts';
  * view above him in the last seconds.
  */
 
-const camY = (lf: number) => track([[-18, 1000], [20, 300, 'inCubic'], [128, -3500, 'linear'], [166, -4100, 'outCubic']], lf);
-const heroPos = (lf: number) => ({ x: 960 + Math.sin(lf * 0.07) * 150, y: camY(lf) + 240 });
+const CAPTURE = 120;
+const camY = (lf: number) => track([[-18, 1000], [20, 300, 'inCubic'], [104, -2600, 'linear'], [130, -2950, 'outCubic'], [166, -3020]], lf);
+const heroPos = (lf: number) => {
+  const fall = smooth(span(lf, CAPTURE, 147));
+  return { x: 960 + Math.sin(Math.min(lf, CAPTURE) * 0.07) * 150 * (1 - fall), y: camY(lf) + 240 + fall * 360 };
+};
 
 // soldier platforms along the climb: [level y, x offsets]
 const LEVELS = Array.from({ length: 8 }, (_, i) => ({ y: 200 - i * 480, xs: [-520, -300, 300, 540].map((o, k) => o + (rand(i * 4 + k) - 0.5) * 80) }));
@@ -25,11 +30,26 @@ const heroAt = (lf: number): Pose => {
   const h = heroPos(lf);
   const near = SWINGS.map((s) => lf - s).filter((d) => d > -4 && d < 10)[0];
   const swing = near === undefined ? 0 : near < 0 ? -(near + 4) / 4 : Math.max(0, 1 - near / 10);
+  const caught = smooth(span(lf, CAPTURE, CAPTURE + 8));
   return {
     ...P.fly, lean: 20, torso: 10, head: -30, staffA: -12 + swing * 140 - (near !== undefined && near < 0 ? 40 : 0),
     uaF: -150 + swing * 80, thF: -10 + Math.sin(lf * 0.5) * 8, thB: 24 - Math.sin(lf * 0.5) * 8,
     x: h.x, y: h.y, s: 0.9, face: 1, brow: 1, mouth: -0.5, wind: 1, staffGlow: 0.5,
+    staff: lf < CAPTURE ? 1 : 0, lid: caught * 0.8,
   };
+};
+
+const spinAt = (lf: number) => -62 + smooth(span(lf, CAPTURE, 147)) * 108;
+const spunPoint = (lf: number, point: [number, number]) => {
+  const h = heroPos(lf);
+  return apply(mul(mul(T(h.x, h.y - 180), R(spinAt(lf))), T(-h.x, -(h.y - 180))), ...point);
+};
+const HIT = spunPoint(CAPTURE - 1, headPoint(heroAt(CAPTURE - 1)));
+const STAFF_ENDS = solve(heroAt(CAPTURE - 1)).staffEnds.map((p) => spunPoint(CAPTURE - 1, p));
+const STAFF_DROP = {
+  x: (STAFF_ENDS[0][0] + STAFF_ENDS[1][0]) / 2,
+  y: (STAFF_ENDS[0][1] + STAFF_ENDS[1][1]) / 2,
+  angle: Math.atan2(STAFF_ENDS[1][1] - STAFF_ENDS[0][1], STAFF_ENDS[1][0] - STAFF_ENDS[0][0]) * 180 / Math.PI,
 };
 
 const scatter = (z: number, n: number, seed: number, fill: string, rim: string) => {
@@ -56,7 +76,12 @@ const scene: SceneDef = {
     plane(0.55, `<g class="s13-storm">${scatter(0.55, 14, 17, 'url(#k-cloud-storm)', 'rgba(200,200,220,.35)')}</g>`),
     plane(1, `${LEVELS.map((l, i) => `${cloud(960 - 900, l.y + 10, 600, 120, 40 + i, 'url(#k-cloud-storm)', '', 'rgba(220,220,240,.4)')}${cloud(960 + 300, l.y + 10, 600, 120, 60 + i, 'url(#k-cloud-storm)', '', 'rgba(220,220,240,.4)')}
       ${l.xs.map((o, k) => `<g class="s13-sol s13-sol-${i}-${k}">${soldier(960 + o, l.y, 0.8, i * 4 + k, o > 0, 1)}</g>`).join('')}`).join('')}
-      <g class="s13-spin">${heroMarkup('wukong', 'sage')}</g>`),
+      <g class="s13-spin">${heroMarkup('wukong', 'sage')}</g>
+      <g class="s13-ring" opacity="0"><ellipse rx="100" ry="48" fill="none" stroke="#6b451a" stroke-width="22"/>
+        <ellipse rx="100" ry="48" fill="none" stroke="#ffe6a0" stroke-width="12"/>
+        <ellipse rx="100" ry="48" fill="none" stroke="#fff9d9" stroke-width="3"/></g>
+      <g class="s13-dropped" opacity="0"><rect x="-252" y="-8" width="504" height="16" rx="6" fill="#b0281c" stroke="#2b1810" stroke-width="3"/>
+        <rect x="-252" y="-10" width="58" height="20" rx="4" fill="#e8b836"/><rect x="194" y="-10" width="58" height="20" rx="4" fill="#e8b836"/></g>`),
     plane(1.8, `<g class="s13-storm">${scatter(1.8, 16, 29, 'url(#k-cloud-storm)', 'rgba(230,230,250,.4)')}</g>`),
   ].join(''),
   camera: (t) => {
@@ -69,7 +94,14 @@ const scene: SceneDef = {
   update: (d, t) => {
     const lf = t.lf;
     const h = heroPos(lf);
-    d.tf('.s13-spin', `rotate(-62 ${h.x.toFixed(1)} ${(h.y - 180).toFixed(1)})`);
+    d.tf('.s13-spin', `rotate(${spinAt(lf).toFixed(1)} ${h.x.toFixed(1)} ${(h.y - 180).toFixed(1)})`);
+    const flight = smooth(span(lf, 98, CAPTURE));
+    const rx = HIT[0] + (1 - flight) * 820, ry = HIT[1] - (1 - flight) * 680;
+    d.tf('.s13-ring', `translate(${rx.toFixed(1)} ${ry.toFixed(1)}) rotate(${(lf * 15).toFixed(1)}) scale(${(1.4 - flight * 0.5).toFixed(3)})`);
+    d.op('.s13-ring', smooth(span(lf, 98, 104)) * (1 - smooth(span(lf, CAPTURE + 3, CAPTURE + 14))));
+    const age = Math.max(0, lf - CAPTURE);
+    d.tf('.s13-dropped', `translate(${(STAFF_DROP.x + age * 5).toFixed(1)} ${(STAFF_DROP.y + age * 3 + 0.65 * age * age).toFixed(1)}) rotate(${(STAFF_DROP.angle + age * 14).toFixed(1)})`);
+    d.op('.s13-dropped', lf >= CAPTURE ? 1 : 0);
     LEVELS.forEach((l, i) => l.xs.forEach((o, k) => {
       const tt = Math.max(0, lf - PASS[i] - Math.abs(o) / 400);
       const dir = o > 0 ? 1 : -1;
@@ -81,7 +113,8 @@ const scene: SceneDef = {
   },
   fx: (ctx, t, view) => {
     const lf = t.lf;
-    streaks(ctx, 0.7, lf, -Math.PI / 2, '220,230,255');
+    streaks(ctx, 0.7 * (1 - smooth(span(lf, 102, CAPTURE))), lf, -Math.PI / 2, '220,230,255');
+    sparks(ctx, view, HIT[0], HIT[1], lf - CAPTURE, 48, 18, 112);
     motes(ctx, view, lf, 50, 'rgba(230,236,255,A)', 71, 1.2, [0, 18], 3);
     PASS.forEach((p, i) => sparks(ctx, view, heroPos(p).x + 40, LEVELS[i].y - 120, lf - p, 30, 22, 90 + i));
     // spears raining down past him

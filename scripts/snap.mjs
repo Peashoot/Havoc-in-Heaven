@@ -42,6 +42,7 @@ try {
   const page = await browser.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1 });
   page.on('pageerror', (e) => console.error('页面错误:', e.message));
   await page.goto(`${url}${pagePath}?frame=${frames[0]}`, { waitUntil: 'networkidle' });
+  await page.evaluate(() => document.fonts.ready);
   for (let i = 0; i < frames.length; i++) {
     const f = frames[i];
     await page.evaluate(async (n) => {
@@ -57,8 +58,11 @@ try {
 
 if (sheet) {
   const rows = Math.ceil(frames.length / cols);
-  spawnSync('ffmpeg', ['-y', '-loglevel', 'error', '-pattern_type', 'glob', '-i', `${outDir}/f-*.png`,
-    '-vf', `scale=480:270,tile=${cols}x${rows}:padding=4:color=black`, '-frames:v', '1', '-q:v', '3',
+  // Chromium can alternate RGB/RGBA PNGs. Reinitialising tile discards earlier frames.
+  const result = spawnSync('ffmpeg', ['-y', '-loglevel', 'error', '-reinit_filter', '0', '-pattern_type', 'glob', '-i', `${outDir}/f-*.png`,
+    '-vf', `format=rgb24,scale=480:270,tile=${cols}x${rows}:padding=4:color=black`, '-frames:v', '1', '-q:v', '3',
     `${outDir}/${sheet}.jpg`], { stdio: 'inherit' });
+  if (result.error) throw result.error;
+  if (result.status !== 0) throw new Error('画面总览生成失败');
 }
 console.log(`已渲染 ${frames.length} 帧 -> ${outDir}`);

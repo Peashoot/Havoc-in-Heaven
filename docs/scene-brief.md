@@ -55,7 +55,7 @@ export default scene;
   face: `mouth` (-1 frown..1 grin), `brow` (0 calm..1 fierce), `lid` (1 closed), `glow` (golden eyes), `look`.
   `wind` pushes cape/plumes. Cape, scarf and pheasant plumes follow through automatically from motion.
   Start from the pose library `P.*` and override fields; use `at(pose, x, y, s, face)`.
-  Costumes: `pilgrim` (scenes 2–3), `king` (4, 10), `bima` (5–9), `sage` (11–13, 20–22), `furnace` (14–19).
+  Costumes: `pilgrim` (scenes 2–3), `king` (4, 10), `bima` (5–6), `sage` (7–9, 11–13, 19–22), `furnace` (14–18).
 
 ## Quality bar (what "done" means)
 

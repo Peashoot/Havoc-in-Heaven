@@ -53,7 +53,8 @@ export const drawCracks = (ctx: CanvasRenderingContext2D, list: Crack[], grow: n
   ctx.restore();
 };
 const FACE_CRACKS = cracks(968, 420, 9, 1300, 5);
-const WALL_CRACKS = cracks(OUT + 960 + DOOR.x - 960 + 60, DOOR.y - 180, 7, 420, 17);
+export const FURNACE_CRACKS = cracks(DOOR.x + 60, DOOR.y - 180, 7, 420, 17);
+const WALL_CRACKS = FURNACE_CRACKS.map((cr) => ({ pts: cr.pts.map(([x, y]): [number, number] => [x + OUT, y]) }));
 
 const outside = () => `<g transform="translate(${OUT} 0)">
   <rect x="-1400" y="-800" width="4800" height="2400" fill="#0c0806"/>
@@ -62,12 +63,12 @@ const outside = () => `<g transform="translate(${OUT} 0)">
   ${furnace('s18-f')}
 </g>`;
 
-const staff = () => `<g class="s18-staff"><g transform="translate(${OUT + 960} 1010) rotate(-4)">
-  <rect class="s18-halo" x="-470" y="-50" width="940" height="100" rx="50" fill="#ffd24a" opacity="0" filter="url(#k-blur16)"/>
-  <rect x="-440" y="-16" width="880" height="32" rx="12" fill="#b0281c" stroke="${INK}" stroke-width="5"/>
-  <rect x="-440" y="-20" width="100" height="40" rx="8" fill="url(#k-gold)" stroke="${INK}" stroke-width="4"/>
-  <rect x="340" y="-20" width="100" height="40" rx="8" fill="url(#k-gold)" stroke="${INK}" stroke-width="4"/>
-  <rect class="s18-core" x="-440" y="-8" width="880" height="16" rx="8" fill="#fff4c0" opacity="0"/></g></g>`;
+const staff = () => `<g class="s18-staff"><g transform="translate(${OUT + 1500} 990) rotate(-4)">
+  <rect class="s18-halo" x="-300" y="-30" width="600" height="60" rx="30" fill="#ffd24a" opacity="0" filter="url(#k-blur16)"/>
+  <rect x="-280" y="-11" width="560" height="22" rx="8" fill="#b0281c" stroke="${INK}" stroke-width="4"/>
+  <rect x="-280" y="-14" width="64" height="28" rx="6" fill="url(#k-gold)" stroke="${INK}" stroke-width="3"/>
+  <rect x="216" y="-14" width="64" height="28" rx="6" fill="url(#k-gold)" stroke="${INK}" stroke-width="3"/>
+  <rect class="s18-core" x="-280" y="-5" width="560" height="10" rx="5" fill="#fff4c0" opacity="0"/></g></g>`;
 
 const scene: SceneDef = {
   id: 18,
@@ -80,12 +81,12 @@ const scene: SceneDef = {
   ].join(''),
   camera: (t) => {
     const lf = t.lf;
-    const x = track([[-12, 960], [WHIP, 960], [WHIP + 8, OUT + 960, 'outExpo'], [120, OUT + 980]], lf);
-    const zoom = track([[-12, 1.12], [OPEN, 1.0, 'inOut'], [OPEN + 6, 1.08, 'outExpo'], [WHIP, 1.16, 'inOut'], [WHIP + 8, 0.9, 'outExpo'], [120, 1.02, 'inOut']], lf);
-    const y = track([[-12, 520], [WHIP, 520], [WHIP + 8, 640, 'outExpo'], [120, 700, 'inOut']], lf);
+    const x = track([[-16, 960], [WHIP, 960], [WHIP + 8, OUT + 960, 'outExpo'], [106, OUT + 980]], lf);
+    const zoom = track([[-16, 1.12], [OPEN, 1.0, 'inOut'], [OPEN + 6, 1.08, 'outExpo'], [WHIP, 1.16, 'inOut'], [WHIP + 8, 0.9, 'outExpo'], [106, 1.02, 'inOut']], lf);
+    const y = track([[-16, 520], [WHIP, 520], [WHIP + 8, 640, 'outExpo'], [106, 700, 'inOut']], lf);
     return { x: x + noise(lf * 0.06, 1) * 6, y: y + noise(lf * 0.06, 3) * 5, zoom };
   },
-  shake: (t) => { const k = t.lf - OPEN - 4, j = t.lf - WHIP - 20; return [k >= 0 && k < 10 ? Math.sin(k * 3) * 10 * (1 - k / 10) : j > 0 ? noise(t.lf, 3) * Math.min(6, j * 0.3) : 0, k >= 0 && k < 10 ? Math.cos(k * 4) * 8 * (1 - k / 10) : 0]; },
+  shake: (t) => { const k = t.lf - OPEN - 4, j = t.lf - WHIP - 20; return [k >= 0 && k < 10 ? Math.sin(k * 3) * 10 * (1 - k / 10) : j > 0 ? noise(t.lf, 3) * Math.min(6, j * 0.3) * (1 - smooth(span(t.lf, 106, 114))) : 0, k >= 0 && k < 10 ? Math.cos(k * 4) * 8 * (1 - k / 10) : 0]; },
   heroes: (t) => [{ name: 'wukong', costume: 'furnace', pose: heroAt(t.lf) }],
   update: (d, t) => {
     const lf = t.lf;

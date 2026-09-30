@@ -114,6 +114,14 @@ export function solve(p: Pose): Solved {
   return { hipY, uaB, faB, staffLocal, hands: { F: w(handF), B: w(handB) }, staffEnds: [w(tail), w(head)], root };
 }
 
+/** A point on the animated head, in scene coordinates (for precisely attached effects). */
+export function headPoint(p: Pose, x = 20, y = -66): [number, number] {
+  const solved = solve(p);
+  const torso = mul(mul(T(0, solved.hipY), R(p.lean)), R(p.torso));
+  const neck = mul(T(NECK[0], NECK[1]), R(p.head));
+  return apply(mul(solved.root, mul(torso, neck)), x, y);
+}
+
 /* ---------------- drawing ---------------- */
 const INK = '#2b1810';
 const sw = 'stroke="#2b1810" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"';

@@ -25,16 +25,17 @@ export function transitionLooks(c: Composition): { a: SlotLook; b: SlotLook } {
   switch (c.transition) {
     case 'dissolve': b.op = m; break;
     case 'push':
-      a.zoomMul = 1 + smooth(r) * 1.2; a.blur = Math.sin(Math.PI * r) * 6;
-      b.op = smooth(span(r, 0.35, 0.72)); b.zoomMul = lerp(0.82, 1, smooth(r)); break;
+      a.zoomMul = 1 + smooth(r) * 0.12; a.blur = Math.sin(Math.PI * r) * 2;
+      b.op = m; b.zoomMul = lerp(0.96, 1, smooth(r)); break;
     case 'whip': {
       const s = Math.sin(Math.PI * r);
-      a.dx = -m * 1500; b.dx = (1 - m) * 1500; a.blur = b.blur = s * 46;
-      b.op = smooth(span(r, 0.2, 0.55)); break;
+      // Keep both sets covering the stage during the pan; opacity carries the edit.
+      a.dx = -m * 240; b.dx = (1 - m) * 240; a.blur = b.blur = s * 12;
+      b.op = m; break;
     }
-    case 'flash': b.op = span(r, 0.42, 0.58); a.zoomMul = 1 + smooth(r) * 0.08; break;
-    case 'cloud': b.op = span(r, 0.4, 0.6); a.zoomMul = 1 + smooth(r) * 0.35; b.zoomMul = lerp(1.18, 1, smooth(r)); break;
-    case 'ink': b.op = span(r, 0.42, 0.58); break;
+    case 'flash': b.op = smooth(span(r, 0.46, 0.54)); break;
+    case 'cloud': b.op = smooth(span(r, 0.44, 0.56)); break;
+    case 'ink': b.op = smooth(span(r, 0.44, 0.56)); break;
     case 'black': b.op = r > 0.5 ? 1 : 0; break;
     default: break;
   }
@@ -64,6 +65,9 @@ export class Renderer {
     if (slot.sceneId === id) return;
     const def = this.scenes[id];
     slot.el.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" data-scene="${id}">${def.markup()}</svg>`;
+    // Effects belong to their scene, so the incoming background occludes outgoing FX.
+    // Opacity, blur and shake now affect SVG and Canvas together.
+    slot.el.append(slot.fx);
     slot.el.style.background = def.bg;
     const svgEl = slot.el.firstElementChild!;
     slot.dom = new Dom(svgEl);
@@ -76,7 +80,8 @@ export class Renderer {
   private draw(slot: Slot, t: SceneTime, look: SlotLook) {
     const def = this.scenes[t.scene];
     const cam = def.camera(t);
-    const camZ = { ...cam, zoom: cam.zoom * look.zoomMul };
+    // Pan the camera instead of sliding the whole slot, which exposed black frame edges.
+    const camZ = { ...cam, x: cam.x - look.dx / cam.zoom, zoom: cam.zoom * look.zoomMul };
     for (const p of slot.planes) p.el.setAttribute('transform', matSvg(planeMatrix(camZ, p.z)));
     if (def.heroes) {
       const now = def.heroes(t);
@@ -91,7 +96,7 @@ export class Renderer {
     }
     def.update?.(slot.dom!, t);
     const [sx, sy] = def.shake?.(t) ?? [0, 0];
-    slot.el.style.transform = `translate(${(look.dx + sx).toFixed(1)}px, ${sy.toFixed(1)}px)`;
+    slot.el.style.transform = `translate(${sx.toFixed(1)}px, ${sy.toFixed(1)}px)`;
     slot.el.style.opacity = String(+look.op.toFixed(3));
     slot.el.style.visibility = look.op > 0.001 ? 'visible' : 'hidden';
     const blur = look.blur > 0.5 ? look.blur : 0;
@@ -99,14 +104,13 @@ export class Renderer {
     filter?.setAttribute('stdDeviation', `${blur.toFixed(1)} 0`);
     slot.el.style.filter = blur ? `url(#whip${slot.index})` : 'none';
 
-    // effects: draw into the slot's offscreen canvas, then composite with the slot's look
+    // Draw effects inside the scene slot, above its SVG.
     const ctx = slot.fxCtx;
     if (ctx) {
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.clearRect(0, 0, 1920, 1080);
       if (def.fx) { ctx.save(); def.fx(ctx, t, new View(camZ)); ctx.restore(); }
     }
-    return { sx, sy };
   }
 
   render(frameNumber: number): Composition {
@@ -120,21 +124,13 @@ export class Renderer {
     slotA.el.style.zIndex = '1';
     if (slotB) slotB.el.style.zIndex = '2';
 
-    const shA = this.draw(slotA, c.a, looks.a);
-    const shB = slotB && c.b ? this.draw(slotB, c.b, looks.b) : null;
+    this.draw(slotA, c.a, looks.a);
+    if (slotB && c.b) this.draw(slotB, c.b, looks.b);
 
     const fx = this.fxCtx;
     if (fx) {
       fx.setTransform(1, 0, 0, 1, 0, 0);
       fx.clearRect(0, 0, 1920, 1080);
-      const comp = (slot: Slot, look: SlotLook, sh: { sx: number; sy: number }) => {
-        if (look.op <= 0.001) return;
-        fx.globalAlpha = look.op;
-        fx.drawImage(slot.fx, look.dx + sh.sx, sh.sy);
-      };
-      comp(slotA, looks.a, shA);
-      if (slotB && shB) comp(slotB, looks.b, shB);
-      fx.globalAlpha = 1;
     }
     this.drawTransition(c);
     this.stage.dataset.frame = String(c.frame);
@@ -151,11 +147,7 @@ export class Renderer {
     const r = c.raw;
     if (c.transition === 'flash') {
       ctx.fillStyle = '#fff6dc';
-      ctx.globalAlpha = Math.pow(Math.sin(Math.PI * r), 1.4);
-      ctx.fillRect(0, 0, 1920, 1080);
-    } else if (c.transition === 'push') {
-      ctx.fillStyle = '#fff3d6';
-      ctx.globalAlpha = Math.pow(Math.sin(Math.PI * r), 3) * 0.55;
+      ctx.globalAlpha = smooth(span(r, 0, 0.46)) * (1 - smooth(span(r, 0.54, 1)));
       ctx.fillRect(0, 0, 1920, 1080);
     } else if (c.transition === 'black') {
       ctx.fillStyle = '#030305';
@@ -184,6 +176,10 @@ function drawCloudWall(ctx: CanvasRenderingContext2D, r: number) {
   ctx.fillStyle = g;
   ctx.globalAlpha = smooth(span(cover, 0.1, 0.8));
   ctx.fillRect(0, 0, 1920, 1080);
+  // Full mist cover while the scene swaps, including the frame edges.
+  ctx.fillStyle = '#eceee8';
+  ctx.globalAlpha = smooth(span(r, 0.12, 0.44)) * (1 - smooth(span(r, 0.56, 0.88)));
+  ctx.fillRect(0, 0, 1920, 1080);
   for (let i = 0; i < 70; i++) {
     const px = cx + (rand(i) - 0.5) * 3000;
     const py = rand(i + 50) * 1300 - 100;
@@ -207,7 +203,7 @@ function drawInk(ctx: CanvasRenderingContext2D, r: number) {
   const cover = Math.sin(Math.PI * r);
   ctx.save();
   ctx.fillStyle = '#07090c';
-  ctx.globalAlpha = smooth(span(cover, 0.75, 1));
+  ctx.globalAlpha = smooth(span(r, 0.08, 0.44)) * (1 - smooth(span(r, 0.56, 0.92)));
   ctx.fillRect(0, 0, 1920, 1080);
   ctx.globalAlpha = 1;
   for (let i = 0; i < 26; i++) {

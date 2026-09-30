@@ -1,6 +1,6 @@
 import { clamp, noise, outBack, outExpo, rand, shake, smooth, span, track, type Key } from '../engine/ease.ts';
 import { plane, type SceneDef } from '../engine/scene.ts';
-import { heroMarkup, type Pose } from '../rig/hero.ts';
+import { headPoint, heroMarkup, type Pose } from '../rig/hero.ts';
 import { at, P, poseTrack } from '../rig/poses.ts';
 import { cloudSea } from './kit.ts';
 import { staffSmear, whiteFrame } from './fxkit.ts';
@@ -17,14 +17,15 @@ const COLORS = ['#ff3a2a', '#ffc21a', '#2ae0e0', '#3a7aff', '#b04aff', '#3ae07a'
 const CORE = { x: 1180, y: 430 };
 
 const KEYS: Key<Pose>[] = [
-  [-12, at({ ...P.heroic, staffA: -90 }, 820, 1000, 1.25)],
-  [8, at({ ...P.heroic, staffA: -92, head: -10 }, 820, 1000, 1.25), 'inOut'],
+  [-12, at({ ...P.heroic, staffA: -90, head: -8, mouth: -0.5, brow: 1 }, 820, 1000, 1.25)],
+  [8, at({ ...P.heroic, staffA: -92, head: -10, mouth: -0.5, brow: 1 }, 820, 1000, 1.25), 'inOut'],
   [SWING - 6, at({ ...P.windup, lean: -10 }, 790, 1000, 1.25), 'inBack'],
   [SWING, at({ ...P.strike, staffA: -40, uaF: -130 }, 860, 990, 1.25), 'outExpo'],
   [SWING + 12, at({ ...P.follow, staffA: -20, uaF: -120 }, 880, 1000, 1.25), 'outBack'],
   [200, at({ ...P.follow, staffA: -22, uaF: -118 }, 880, 1000, 1.25), 'inOut'],
 ];
 const heroAt = (lf: number): Pose => ({ ...poseTrack(KEYS, lf), staffGlow: 1, glow: 1, wind: 1 });
+const eye = headPoint(heroAt(0));
 
 const scene: SceneDef = {
   id: 22,
@@ -48,8 +49,11 @@ const scene: SceneDef = {
   ].join(''),
   camera: (t) => {
     const lf = t.lf;
-    const zoom = track([[-12, 0.96], [SWING - 6, 1.02, 'inOut'], [SWING, 0.9, 'outExpo'], [COLLAPSE, 1.1, 'inOut']], lf);
-    return { x: 960 + noise(lf * 0.05, 1) * 8, y: 560 + noise(lf * 0.05, 2) * 6, zoom };
+    // Continue the preceding eye close-up, then pull back for the final wind-up.
+    const zoom = track([[-16, 5.4], [0, 5.4], [SWING - 6, 1.02, 'inOut'], [SWING, 0.9, 'outExpo'], [COLLAPSE, 1.1, 'inOut']], lf);
+    const x = track([[-16, eye[0]], [0, eye[0]], [SWING - 6, 960, 'inOut']], lf);
+    const y = track([[-16, eye[1]], [0, eye[1]], [SWING - 6, 560, 'inOut']], lf);
+    return { x: x + noise(lf * 0.05, 1) * 4, y: y + noise(lf * 0.05, 2) * 4, zoom };
   },
   shake: (t) => shake(t.lf, SWING, 36, 12),
   heroes: (t) => [{ name: 'wukong', costume: 'sage', pose: heroAt(t.lf) }],

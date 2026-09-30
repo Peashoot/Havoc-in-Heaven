@@ -1,7 +1,7 @@
 import { noise, rand, smooth, span, track } from '../engine/ease.ts';
 import { plane, type SceneDef } from '../engine/scene.ts';
 import { heroMarkup, solve, type Pose } from '../rig/hero.ts';
-import { pose, walk } from '../rig/poses.ts';
+import { P, pose, poseTrack, walk } from '../rig/poses.ts';
 import { cloud, cloudSea, hall, haze, immortal, INK, orb, pagoda, sky } from './kit.ts';
 import { motes } from './fxkit.ts';
 
@@ -37,9 +37,19 @@ const horse = (i: number) => {
 };
 
 const heroAt = (lf: number): Pose => {
-  const x = 700 + lf * RUN * 0.95;
-  const run = walk(lf / 11, pose({ torso: 14, head: -6, mouth: 1, brow: 0.1, uaF: -70, faF: -30 }), 1);
-  return { ...run, uaF: -80 + Math.sin(lf * 0.4) * 30, faF: -40, x, y: GROUND, s: 0.72, face: 1 };
+  const anger = smooth(span(lf, 76, 96));
+  const run = walk(Math.min(lf, 94) / 11, pose({ torso: 14, head: -6, mouth: 1, brow: 0.1, uaF: -70, faF: -30 }), 1);
+  const running = { ...run, uaF: -80 + Math.sin(Math.min(lf, 94) * 0.4) * 30, faF: -40, x: 700 + Math.min(lf, 94) * RUN * 0.95, y: GROUND, s: 0.72, face: 1, mouth: 1 - anger * 1.7, brow: 0.1 + anger * 0.9 };
+  if (lf < 94) return running;
+  const stopX = 700 + 94 * RUN * 0.95;
+  const base = { x: stopX, y: GROUND, s: 0.72, staff: 0, mouth: -0.7, brow: 1 };
+  return poseTrack([
+    [94, running],
+    [104, { ...P.angry, ...base }, 'inOut'],
+    [116, { ...P.crouch, ...base, face: -1, twoHand: 0 }, 'inBack'],
+    [126, { ...P.jump, ...base, x: stopX - 200, y: GROUND - 120, face: -1 }, 'outCubic'],
+    [164, { ...P.fly, ...base, x: stopX - 2150, y: GROUND - 400, face: -1, wind: 0.8 }, 'inCubic'],
+  ], lf);
 };
 
 const terraces = () => `
@@ -70,6 +80,7 @@ const scene: SceneDef = {
         <path d="M-820 ${GROUND - 150}H4600M-820 ${GROUND - 90}H4600" stroke="#b5342a" stroke-width="12"/></g>
       <g class="s6-herd">${HORSES.map((_, i) => horse(i)).join('')}</g>
       <path class="s6-whip" d="" fill="none" stroke="#e8e0c8" stroke-width="5" stroke-linecap="round"/>
+      <g class="s6-exitcloud" opacity="0">${cloud(-180, 16, 380, 80, 29, 'url(#k-cloud-gold)')}</g>
       ${heroMarkup('wukong', 'bima')}`),
     plane(1.6, `<g class="s6-fg">${cloud(-800, 1200, 1200, 300, 21, 'url(#k-cloud-gold)')}${cloud(700, 1260, 1200, 260, 23, 'url(#k-cloud-gold)')}${cloud(2100, 1200, 1300, 300, 25, 'url(#k-cloud-gold)')}</g>`),
     plane(1.6, `<rect class="s6-grade" x="-6000" y="-4000" width="16000" height="10000" fill="#6e6a5e" opacity="0"/>`),
@@ -85,6 +96,10 @@ const scene: SceneDef = {
   heroes: (t) => [{ name: 'wukong', costume: 'bima', pose: heroAt(t.lf) }],
   update: (d, t) => {
     const lf = t.lf;
+    const h = heroAt(lf);
+    d.tf('.s6-exitcloud', `translate(${h.x.toFixed(1)} ${h.y.toFixed(1)})`);
+    d.op('.s6-exitcloud', smooth(span(lf, 108, 118)));
+    d.op('.s6-whip', 1 - smooth(span(lf, 94, 108)));
     HORSES.forEach((h, i) => {
       const ph = lf / 9 + h.ph * 6;
       const x = h.x + lf * RUN, y = h.y - Math.abs(Math.sin(ph * Math.PI)) * 18;

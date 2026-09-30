@@ -23,22 +23,22 @@ export const TRANSITIONS: Transition[] = [
   { type: 'whip', len: 18 },     // 3 -> 4  somersault cloud streaks away
   { type: 'flash', len: 20 },    // 4 -> 5  staff glint becomes the decree's light
   { type: 'dissolve', len: 22 }, // 5 -> 6
-  { type: 'dissolve', len: 24 }, // 6 -> 7
-  { type: 'push', len: 20 },     // 7 -> 8  push through the banquet door
-  { type: 'whip', len: 14 },     // 8 -> 9
+  { type: 'cloud', len: 30 },    // 6 -> 7  return to heaven after a second invitation
+  { type: 'dissolve', len: 30 }, // 7 -> 8  hold the exclusion beat, then his reaction
+  { type: 'dissolve', len: 20 }, // 8 -> 9  reaction to action in the same banquet
   { type: 'flash', len: 18 },    // 9 -> 10 spinning pill becomes the sun
   { type: 'ink', len: 26 },      // 10 -> 11 black clouds swallow the sun
   { type: 'dissolve', len: 16 }, // 11 -> 12
   { type: 'whip', len: 16 },     // 12 -> 13
-  { type: 'black', len: 24 },    // 13 -> 14 capture
+  { type: 'black', len: 28 },    // 13 -> 14 capture, now shown before the fade
   { type: 'dissolve', len: 20 }, // 14 -> 15
   { type: 'black', len: 22 },    // 15 -> 16
   { type: 'dissolve', len: 22 }, // 16 -> 17 ember becomes fire
-  { type: 'push', len: 18 },     // 17 -> 18 into the eyes
-  { type: 'flash', len: 16 },    // 18 -> 19
+  { type: 'push', len: 28 },     // 17 -> 18 into the eyes
+  { type: 'dissolve', len: 26 }, // 18 -> 19 same furnace, reserve flash for the explosion
   { type: 'whip', len: 16 },     // 19 -> 20
   { type: 'dissolve', len: 18 }, // 20 -> 21
-  { type: 'flash', len: 18 },    // 21 -> 22
+  { type: 'dissolve', len: 24 }, // 21 -> 22 reserve the flash for the final swing
 ];
 
 export function sceneAt(frame: number): number {

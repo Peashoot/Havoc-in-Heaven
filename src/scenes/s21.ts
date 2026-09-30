@@ -1,6 +1,6 @@
 import { noise, outBack, outExpo, rand, shake, smooth, span, track, type Key } from '../engine/ease.ts';
 import { plane, type SceneDef } from '../engine/scene.ts';
-import { heroMarkup, type Pose } from '../rig/hero.ts';
+import { headPoint, heroMarkup, type Pose } from '../rig/hero.ts';
 import { at, P, pose, poseTrack } from '../rig/poses.ts';
 import { INK, soldier } from './kit.ts';
 import { motes, sparks, whiteFrame } from './fxkit.ts';
@@ -13,7 +13,6 @@ import { motes, sparks, whiteFrame } from './fxkit.ts';
  */
 
 const HERO = { x: 960, y: 960, s: 0.9 };
-const EYES = { x: HERO.x + 21, y: HERO.y - 338 };
 const LAND = 10, STILL = 40;
 
 const KEYS: Key<Pose>[] = [
@@ -24,6 +23,8 @@ const KEYS: Key<Pose>[] = [
   [130, at({ ...P.heroic, staffA: -88, mouth: -0.5, brow: 1, head: -8 }, HERO.x, HERO.y, HERO.s), 'inOut'],
 ];
 const heroAt = (lf: number): Pose => ({ ...poseTrack(KEYS, lf), glow: 0.35 + smooth(span(lf, 70, 118)) * 0.65, wind: lf < STILL ? 0.8 : 0.15, staffGlow: 0.4 });
+const eye = headPoint(heroAt(130));
+const EYES = { x: eye[0], y: eye[1] };
 
 // ranks: [plane z, x from centre, floor y, scale, count, dx]
 const RANKS: [number, number, number, number, number, number][] = [

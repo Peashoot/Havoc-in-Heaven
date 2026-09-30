@@ -14,7 +14,7 @@ import { motes, streaks } from './fxkit.ts';
 
 const FACE = { x: 900, y: 2230, s: 4.4 };
 const TABLE = { x0: 2200, x1: 3900, y: 860 };
-const PAN = { out0: 34, out1: 52, back0: 74, back1: 84 };
+const PAN = { out0: 32, out1: 54, back0: 66, back1: 88 };
 
 const faceAt = (lf: number): Pose => {
   const fade = smooth(span(lf, 26, 40));
@@ -69,19 +69,19 @@ const scene: SceneDef = {
     plane(0.45, `<g filter="url(#k-blur6)" opacity=".7">${Array.from({ length: 14 }, (_, i) => `<g transform="translate(${-400 + i * 360} ${130 + (i % 3) * 40})"><path d="M0 -60v30" stroke="#5a2a1a" stroke-width="3"/><ellipse cx="0" cy="0" rx="36" ry="46" fill="#e8402a"/><ellipse cx="0" cy="0" rx="18" ry="30" fill="#ffc060" opacity=".7"/></g>`).join('')}</g>`),
     plane(1, `<g class="s8-table">${table()}</g>
       <ellipse cx="${FACE.x + 80}" cy="560" rx="560" ry="620" fill="#ff9a40" opacity=".22" filter="url(#k-blur40)"/>
-      ${heroMarkup('wukong', 'bima')}
+      ${heroMarkup('wukong', 'sage')}
       <g class="s8-peach">${peach(0, 0, 1.3)}</g><g class="s8-bitten" opacity="0">${peach(0, 0, 1.3, '', true)}</g>
       <rect class="s8-grade" x="-3000" y="-3000" width="9000" height="8000" fill="#300808" opacity="0"/>`),
     plane(1.9, `<g filter="url(#k-blur16)">${bokeh(10, 71, 0, 1100, 60, 140, ['#ffb040', '#ff7a3a'])}</g>`),
   ].join(''),
   camera: (t) => {
     const lf = t.lf;
-    const x = track([[-12, 940], [PAN.out0, 960], [PAN.out1, 2600, 'inOut'], [PAN.back0, 3420, 'linear'], [PAN.back1, 1000, 'outExpo'], [130, 980]], lf);
-    const y = track([[-12, 560], [PAN.out0, 540], [PAN.out1, 640, 'inOut'], [PAN.back0, 660], [PAN.back1, 540, 'outExpo'], [130, 520]], lf);
-    const zoom = track([[-12, 1.0], [PAN.out0, 1.1], [PAN.out1, 1.0, 'inOut'], [PAN.back0, 1.06], [PAN.back1, 1.2, 'outExpo'], [130, 1.34, 'inOut']], lf);
+    const x = track([[-12, 940], [PAN.out0, 960], [PAN.out1, 2860, 'inOut'], [PAN.back0, 3000], [PAN.back1, 1000, 'inOut'], [130, 980]], lf);
+    const y = track([[-12, 560], [PAN.out0, 540], [PAN.out1, 640, 'inOut'], [PAN.back0, 650], [PAN.back1, 540, 'inOut'], [130, 520]], lf);
+    const zoom = track([[-18, 0.30], [10, 0.40], [PAN.out0, 1.1, 'inOut'], [PAN.out1, 1.0, 'inOut'], [PAN.back0, 1.06], [PAN.back1, 1.2, 'inOut'], [136, 1.34, 'inOut']], lf);
     return { x: x + noise(lf * 0.04, 1) * 8, y: y + noise(lf * 0.04, 2) * 6, zoom };
   },
-  heroes: (t) => [{ name: 'wukong', costume: 'bima', pose: faceAt(t.lf) }],
+  heroes: (t) => [{ name: 'wukong', costume: 'sage', pose: faceAt(t.lf) }],
   update: (d, t) => {
     const lf = t.lf;
     const hand = solve(faceAt(lf)).hands.F;

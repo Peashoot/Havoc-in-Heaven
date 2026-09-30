@@ -3,6 +3,7 @@ import { RIG_DEFS } from './rig/hero.ts';
 import { KIT_DEFS } from './scenes/kit.ts';
 import { SCENES } from './scenes/index.ts';
 import { FPS, TOTAL_FRAMES } from './timeline.ts';
+import { captionAt } from './captions.ts';
 
 declare global {
   interface Window { renderFrame: (frameNumber: number) => void }
@@ -29,21 +30,29 @@ function init() {
     document.getElementById('fx') as HTMLCanvasElement,
     document.getElementById('tx') as HTMLCanvasElement,
   );
+  const captions = document.getElementById('captions')!;
+  const captionText = captions.querySelector('span')!;
+  const render = (frame: number) => {
+    const c = renderer.render(frame);
+    const caption = captionAt(c.frame);
+    if (captionText.textContent !== caption.text) captionText.textContent = caption.text;
+    captions.style.opacity = String(caption.opacity);
+  };
   let manual = false;
-  window.renderFrame = (frame: number) => { manual = true; renderer.render(frame); };
+  window.renderFrame = (frame: number) => { manual = true; render(frame); };
   window.addEventListener('resize', () => fitStage(stage));
   fitStage(stage);
 
   const requested = new URLSearchParams(location.search).get('frame');
   if (requested !== null && Number.isFinite(Number(requested))) {
-    renderer.render(Number(requested));
+    render(Number(requested));
     return;
   }
   const started = performance.now();
   const tick = (now: number) => {
     if (manual) return;
     const frame = Math.min(TOTAL_FRAMES - 1, Math.floor(((now - started) / 1000) * FPS));
-    renderer.render(frame);
+    render(frame);
     if (frame < TOTAL_FRAMES - 1) requestAnimationFrame(tick);
   };
   requestAnimationFrame(tick);
